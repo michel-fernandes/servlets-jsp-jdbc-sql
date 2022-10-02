@@ -6,6 +6,13 @@
   <packaging>war</packaging>
   <name>jsp-exemplo</name>
   <description>https://github.com/michel-fernandes/servlets-jsp-jdbc-sql.git</description>
+  <dependencies>
+  	<dependency>
+	    <groupId>org.postgresql</groupId>
+	    <artifactId>postgresql</artifactId>
+	    <version>42.5.0</version>
+	</dependency>
+  </dependencies>
   <build>
     <plugins>
       <plugin>
