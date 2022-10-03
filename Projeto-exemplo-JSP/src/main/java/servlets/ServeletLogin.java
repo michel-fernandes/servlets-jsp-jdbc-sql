@@ -9,11 +9,16 @@ import jakarta.servlet.http.HttpServletResponse;
 import model.ModelLogin;
 
 import java.io.IOException;
+import java.sql.SQLException;
+
+import dao.LoginDAORepository;
 
 /*controller, ServeletLoginController*/
 @WebServlet(urlPatterns = {"/principal/ServletLogin", "/ServletLogin"})
 public class ServeletLogin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	private LoginDAORepository loginDAO = new LoginDAORepository();
        
     public ServeletLogin() {
 
@@ -26,33 +31,41 @@ public class ServeletLogin extends HttpServlet {
 	
 	/*Recebe os dados enviados por um formulário*/
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String senha = request.getParameter("senha");
-		String login = request.getParameter("login");
-		String url = request.getParameter("url");
-		
-		if(!login.isEmpty() && login!= null && !senha.isEmpty() && senha!= null) {
-			ModelLogin modelLogin = new ModelLogin(login, senha);
+		try {
+			String senha = request.getParameter("senha");
+			String login = request.getParameter("login");
+			String url = request.getParameter("url");
 			
-			if(modelLogin.getLogin().equalsIgnoreCase("admin") 
-					&& modelLogin.getSenha().equalsIgnoreCase("admin")) {
-				request.getSession().setAttribute("usuario", modelLogin.getLogin());
+			if(!login.isEmpty() && login!= null && !senha.isEmpty() && senha!= null) {
+				ModelLogin modelLogin = new ModelLogin(login, senha);
 				
-				if(url==null || url.equals("null")) {
-					url = "/principal/principal.jsp";
+				if(loginDAO.Autenticar(modelLogin)) {
+					request.getSession().setAttribute("usuario", modelLogin.getLogin());
+					
+					if(url==null || url.equals("null")) {
+						url = "/principal/principal.jsp";
+					}
+					RequestDispatcher redirecionar = request.getRequestDispatcher(url);
+					redirecionar.forward(request, response);
+				} else {
+					RequestDispatcher redirecionar = request.getRequestDispatcher("/index.jsp?");
+					request.setAttribute("msg", "Login ou senha incorreto");
+					redirecionar.forward(request, response);
 				}
-				RequestDispatcher redirecionar = request.getRequestDispatcher(url);
-				redirecionar.forward(request, response);
-			} else {
-				RequestDispatcher redirecionar = request.getRequestDispatcher("/index.jsp");
-				request.setAttribute("msg", "Informe o login e senha");
+			}else {
+				RequestDispatcher redirecionar = request.getRequestDispatcher("/index.jsp?");
+				request.setAttribute("msg", "Por favor, fazer login");
 				redirecionar.forward(request, response);
 			}
-		}else {
-			RequestDispatcher redirecionar = request.getRequestDispatcher("/index.jsp");
-			request.setAttribute("msg", "Informe o login e senha");
-			redirecionar.forward(request, response);
-		}
-		
+		} catch (Exception e) {
+			e.printStackTrace();
+			erro(e.getMessage(), request, response);
+		} 		
 	}
-
+	
+	public void erro(String msg, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		RequestDispatcher redirecionar = request.getRequestDispatcher("/erro.jsp");
+		request.setAttribute("msg", msg);
+		redirecionar.forward(request, response);
+	}
 }

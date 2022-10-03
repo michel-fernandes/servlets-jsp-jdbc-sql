@@ -10,6 +10,7 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
@@ -62,10 +63,12 @@ public class FilterAuntenticacao extends HttpFilter implements Filter {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			erro(e.getMessage(), request, response);
 			try {
 				connection.rollback();
 			} catch (SQLException e1) {
 				e1.printStackTrace();
+				erro(e1.getMessage(), request, response);
 			}
 		}
 	}
@@ -73,6 +76,12 @@ public class FilterAuntenticacao extends HttpFilter implements Filter {
 	// inicia os processos quando o servidor é iniciado
 	public void init(FilterConfig fConfig) throws ServletException {
 		connection = SingleConnection.getConnection();
+	}
+	
+	public void erro(String msg, ServletRequest request, ServletResponse response) throws ServletException, IOException {
+		RequestDispatcher redirecionar = request.getRequestDispatcher("/erro.jsp");
+		request.setAttribute("msg", msg);
+		redirecionar.forward(request, response);
 	}
 
 }
