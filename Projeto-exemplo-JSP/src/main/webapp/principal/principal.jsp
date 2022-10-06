@@ -1,12 +1,41 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
+<html lang="en">
+
+<jsp:include page="head.jsp" />
+
 <body>
-<h1>Tela principal após o login</h1>
+	<jsp:include page="pre-loader.jsp" />
+	<div id="pcoded" class="pcoded">
+		<div class="pcoded-overlay-box"></div>
+		<div class="pcoded-container navbar-wrapper">
+			<jsp:include page="navbar.jsp" />
+			<div class="pcoded-main-container">
+				<div class="pcoded-wrapper">
+					<jsp:include page="navbar_mainmenu.jsp" />
+					<div class="pcoded-content">
+						<jsp:include page="page_header.jsp" />
+						<div class="pcoded-inner-content">
+							<!-- Main-body start -->
+							<div class="main-body">
+								<div class="page-wrapper">
+									<!-- Page-body start -->
+									<div class="page-body">
+										<div class="row">
+										<h1>Conteúdo da página</h1>
+										</div>
+									</div>
+									<!-- Page-body end -->
+								</div>
+								<div id="styleSelector"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<jsp:include page="jsfile.jsp" />
 </body>
 </html>

@@ -16,13 +16,13 @@ public class LoginDAORepository {
 		this.connection = SingleConnection.getConnection();
 	}
 
-	public boolean Autenticar(ModelLogin modelLogin) throws SQLException {
+	public boolean autenticar(ModelLogin modelLogin) throws SQLException {
 
 		String sql = "select * from model_login where login=? and senha=?";
 
 		PreparedStatement statement = connection.prepareStatement(sql);
 		statement.setString(1, modelLogin.getLogin());
-		statement.setString(2, modelLogin.getLogin());
+		statement.setString(2, modelLogin.getSenha());
 
 		ResultSet resultSet = statement.executeQuery();
 

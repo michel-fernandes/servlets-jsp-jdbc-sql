@@ -23,4 +23,14 @@
     <filter-name>FilterAuntenticacao</filter-name>
     <url-pattern>/FilterAuntenticacao</url-pattern>
   </filter-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ServeletUsuarioController</display-name>
+    <servlet-name>ServeletUsuarioController</servlet-name>
+    <servlet-class>servlets.ServeletUsuarioController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ServeletUsuarioController</servlet-name>
+    <url-pattern>/ServeletUsuarioController</url-pattern>
+  </servlet-mapping>
 </web-app>
