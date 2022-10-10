@@ -19,8 +19,14 @@ CREATE TABLE IF NOT EXISTS public.model_login
     id integer NOT NULL DEFAULT nextval('model_login_id_seq'::regclass),
     email character varying(255) COLLATE pg_catalog."default" NOT NULL,
     nome character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    useradmin boolean NOT NULL DEFAULT false,
+    usuario_id bigint NOT NULL DEFAULT 2,
     CONSTRAINT model_login_pkey PRIMARY KEY (id),
-    CONSTRAINT login_unique UNIQUE (login)
+    CONSTRAINT login_unique UNIQUE (login),
+    CONSTRAINT usuario_fk FOREIGN KEY (usuario_id)
+        REFERENCES public.model_login (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
 )
 
 TABLESPACE pg_default;

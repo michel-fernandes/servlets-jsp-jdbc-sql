@@ -1,17 +1,22 @@
 package servlets;
 
-import jakarta.servlet.RequestDispatcher;
+import java.io.IOException;
+import java.util.List;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
+
+import dao.UsuarioDAORepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.ModelLogin;
-
-import java.io.IOException;
-import java.sql.SQLException;
-
-import dao.UsuarioDAORepository;
 
 @WebServlet(urlPatterns = {"/ServletUsuarioController"})
 public class ServletUsuarioController extends HttpServlet {
@@ -23,7 +28,51 @@ public class ServletUsuarioController extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		try {
+			String acao = request.getParameter("acao");
+			String login = request.getParameter("login");
+			
+			usuarioDAO = new UsuarioDAORepository();
+						
+			if(acao.equals("buscarEditar")) {
+				Long id = Long.parseLong(request.getParameter("id"));
+				ModelLogin user = usuarioDAO.consultarId(id);					
+				System.out.println(user.toString());				
+				List<ModelLogin> listUsers = usuarioDAO.consultarUsers();							
+				request.setAttribute("listUsers", listUsers);
+				request.setAttribute("msg", "Usuário em edição");
+				request.setAttribute("modelLogin", user);
+				request.getRequestDispatcher("/principal/cadastro-usuario.jsp").forward(request, response);
+			} else if(acao.equals("listarUser")) {
+				List<ModelLogin> listUsers = usuarioDAO.consultarUsers();							
+				request.setAttribute("listUsers", listUsers);
+				request.setAttribute("msg", "Usuários carregados");
+				request.getRequestDispatcher("/principal/cadastro-usuario.jsp").forward(request, response);
+			}else if(!login.isEmpty() && login!= null && acao.equals("deletarAjax")
+						&& usuarioDAO.jaExisteLogin(login)) { //alternativa a solução acima
+				usuarioDAO.deletar(login);					
+				List<ModelLogin> listUsers = usuarioDAO.consultarUsers();							
+				request.setAttribute("listUsers", listUsers);
+				request.setAttribute("msg", "Usuário excluido com sucesso");
+			}else if(!login.isEmpty() && login!= null && acao.equals("consultarUsuarioAjax")) {
+				List<ModelLogin> listUsers = usuarioDAO.consultarUsers(login);					
+				Gson gson = new GsonBuilder().setPrettyPrinting().create(); //bewutify Gson
+				String json = gson.toJson(listUsers);
+				response.getWriter().write(json);
+			}else if(!login.isEmpty() && login!= null && login.equals("deletar") && usuarioDAO.jaExisteLogin(login)){
+				usuarioDAO.deletar(login);					
+				List<ModelLogin> listUsers = usuarioDAO.consultarUsers();							
+				request.setAttribute("listUsers", listUsers);
+				request.setAttribute("msg", "Usuário excluido com sucesso");
+				request.getRequestDispatcher("/principal/cadastro-usuario.jsp").forward(request, response);
+			}else {
+				throw new Exception("Usuário não encontrado");
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			erro(e.getMessage(), request, response);
+		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -52,6 +101,8 @@ public class ServletUsuarioController extends HttpServlet {
 					request.setAttribute("msg", "Usuário atualizado com sucesso");
 					request.setAttribute("modelLogin", modelLogin);
 				}
+				List<ModelLogin> listUsers = usuarioDAO.consultarUsers();							
+				request.setAttribute("listUsers", listUsers);
 				request.getRequestDispatcher("/principal/cadastro-usuario.jsp").forward(request, response);
 			}
 		} catch (Exception e) {
