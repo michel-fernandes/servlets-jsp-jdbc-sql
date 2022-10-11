@@ -19,7 +19,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import model.ModelLogin;
 
 @WebServlet(urlPatterns = {"/ServletUsuarioController"})
-public class ServletUsuarioController extends HttpServlet {
+public class ServletUsuarioController  extends ServletGenericUtil{
+	
 	private static final long serialVersionUID = 1L;
 	private UsuarioDAORepository usuarioDAO; 
        
@@ -36,32 +37,32 @@ public class ServletUsuarioController extends HttpServlet {
 						
 			if(acao.equals("buscarEditar")) {
 				Long id = Long.parseLong(request.getParameter("id"));
-				ModelLogin user = usuarioDAO.consultarId(id);					
+				ModelLogin user = usuarioDAO.consultarId(id, super.getUserLogado(request));					
 				System.out.println(user.toString());				
-				List<ModelLogin> listUsers = usuarioDAO.consultarUsers();							
+				List<ModelLogin> listUsers = usuarioDAO.consultarUsers(super.getUserLogado(request));							
 				request.setAttribute("listUsers", listUsers);
 				request.setAttribute("msg", "Usuário em edição");
 				request.setAttribute("modelLogin", user);
 				request.getRequestDispatcher("/principal/cadastro-usuario.jsp").forward(request, response);
 			} else if(acao.equals("listarUser")) {
-				List<ModelLogin> listUsers = usuarioDAO.consultarUsers();							
+				List<ModelLogin> listUsers = usuarioDAO.consultarUsers(super.getUserLogado(request));							
 				request.setAttribute("listUsers", listUsers);
 				request.setAttribute("msg", "Usuários carregados");
 				request.getRequestDispatcher("/principal/cadastro-usuario.jsp").forward(request, response);
 			}else if(!login.isEmpty() && login!= null && acao.equals("deletarAjax")
 						&& usuarioDAO.jaExisteLogin(login)) { //alternativa a solução acima
 				usuarioDAO.deletar(login);					
-				List<ModelLogin> listUsers = usuarioDAO.consultarUsers();							
+				List<ModelLogin> listUsers = usuarioDAO.consultarUsers(super.getUserLogado(request));							
 				request.setAttribute("listUsers", listUsers);
 				request.setAttribute("msg", "Usuário excluido com sucesso");
 			}else if(!login.isEmpty() && login!= null && acao.equals("consultarUsuarioAjax")) {
-				List<ModelLogin> listUsers = usuarioDAO.consultarUsers(login);					
+				List<ModelLogin> listUsers = usuarioDAO.consultarUsers(login, super.getUserLogado(request));					
 				Gson gson = new GsonBuilder().setPrettyPrinting().create(); //bewutify Gson
 				String json = gson.toJson(listUsers);
 				response.getWriter().write(json);
 			}else if(!login.isEmpty() && login!= null && login.equals("deletar") && usuarioDAO.jaExisteLogin(login)){
 				usuarioDAO.deletar(login);					
-				List<ModelLogin> listUsers = usuarioDAO.consultarUsers();							
+				List<ModelLogin> listUsers = usuarioDAO.consultarUsers(super.getUserLogado(request));							
 				request.setAttribute("listUsers", listUsers);
 				request.setAttribute("msg", "Usuário excluido com sucesso");
 				request.getRequestDispatcher("/principal/cadastro-usuario.jsp").forward(request, response);
@@ -91,17 +92,17 @@ public class ServletUsuarioController extends HttpServlet {
 				usuarioDAO = new UsuarioDAORepository();
 				
 				if(!usuarioDAO.jaExisteLogin(modelLogin.getLogin())) {
-					modelLogin = usuarioDAO.criar(modelLogin);
+					modelLogin = usuarioDAO.criar(modelLogin, super.getUserLogado(request));
 					System.out.println(modelLogin.toString());				
 					request.setAttribute("msg", "Usuário criado com sucesso");
 					request.setAttribute("modelLogin", modelLogin);
 				}else {
-					modelLogin = usuarioDAO.atualizar(modelLogin);
+					modelLogin = usuarioDAO.atualizar(modelLogin, super.getUserLogado(request));
 					System.out.println(modelLogin.toString());				
 					request.setAttribute("msg", "Usuário atualizado com sucesso");
 					request.setAttribute("modelLogin", modelLogin);
 				}
-				List<ModelLogin> listUsers = usuarioDAO.consultarUsers();							
+				List<ModelLogin> listUsers = usuarioDAO.consultarUsers(super.getUserLogado(request));							
 				request.setAttribute("listUsers", listUsers);
 				request.getRequestDispatcher("/principal/cadastro-usuario.jsp").forward(request, response);
 			}

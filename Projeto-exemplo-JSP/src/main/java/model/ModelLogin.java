@@ -12,6 +12,7 @@ public class ModelLogin implements Serializable {
 	private String email;
 	private String login;
 	private String senha;
+	private boolean admin;
 	
 	public ModelLogin() {
 		
@@ -38,6 +39,14 @@ public class ModelLogin implements Serializable {
 	}
 	
 	
+	public boolean isAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
+	}
+
 	public String getNome() {
 		return nome;
 	}

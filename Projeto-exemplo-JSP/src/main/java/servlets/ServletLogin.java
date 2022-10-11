@@ -10,6 +10,7 @@ import model.ModelLogin;
 import java.io.IOException;
 
 import dao.LoginDAORepository;
+import dao.UsuarioDAORepository;
 
 /*controller, ServeletLoginController*/
 @WebServlet(urlPatterns = {"/principal/ServletLogin", "/ServletLogin"})
@@ -17,7 +18,8 @@ public class ServletLogin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private LoginDAORepository loginDAO = new LoginDAORepository();
-       
+	private UsuarioDAORepository usuarioDAO = new UsuarioDAORepository();
+	
     public ServletLogin() {
 
     }
@@ -47,8 +49,11 @@ public class ServletLogin extends HttpServlet {
 				ModelLogin modelLogin = new ModelLogin(login, senha);
 				
 				if(loginDAO.autenticar(modelLogin)) {
+					ModelLogin modelLogado = usuarioDAO.consultarLogado(modelLogin.getLogin());
 					request.getSession().setAttribute("usuario", modelLogin.getLogin());
 					
+					request.getSession().setAttribute("isAdmin", modelLogado.isAdmin());
+							
 					if(url==null || url.equals("null")) {
 						url = "/principal/principal.jsp";
 					}
