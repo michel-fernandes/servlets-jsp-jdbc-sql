@@ -47,18 +47,15 @@
 																		class="float-label">ID</label>
 																</div>
 																<div class="form-group row">
-																<c:if test="${modelLogin.getImagem() != ''}">
-																	<img class="col-sm-1" alt="Imagem do perfil" id="imagemBase64" src="${modelLogin.getImagem()}">
+                                                                    <c:if test="${modelLogin.getNome()!=''}">
+                                                                    	<img class="col-sm-1" alt="Imagem do perfil" id="imagemBase64BD" src="${modelLogin.getNome()}">
+                                                                    </c:if>
+                                                                    <c:otherwise>
+                                                                    	<img class="col-sm-1" alt="Imagem do perfil" id="imagemBase64" src="../assets/images/avatar-blank.jpg">
+                                                                    </c:otherwise>
                                                                     <div class="col-sm-11">
                                                                     	<input type="file" accept="images/*" id="fileFoto" name="fileFoto" onchange="visualizarImg('imagemBase64', 'fileFoto');" class="form-control"/>
                                                                 	</div>
-																</c:if>
-																<c:otherwise>
-																	<img class="col-sm-1" alt="Imagem do perfil" id="imagemBase64" src="">
-                                                                    <div class="col-sm-11">
-                                                                    	<input type="file" accept="images/*" id="fileFoto" name="fileFoto" onchange="visualizarImg('imagemBase64', 'fileFoto');" class="form-control"/>
-                                                                	</div>
-																</c:otherwise>
                                                                 </div>
 																<div class="form-group form-default form-static-label">
 																	<input type="text" name="nome" id="nome"
