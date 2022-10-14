@@ -13,6 +13,8 @@ public class ModelLogin implements Serializable {
 	private String login;
 	private String senha;
 	private boolean admin;
+	private String perfil;
+	private String sexo;
 	
 	public ModelLogin() {
 		
@@ -33,12 +35,37 @@ public class ModelLogin implements Serializable {
 		this.senha = senha;
 	}
 	
+	
+	public ModelLogin(String nome, String email, String login, String senha, String perfil, String sexo) {
+		this.nome = nome;
+		this.email = email;
+		this.login = login;
+		this.senha = senha;
+		this.perfil = perfil;
+		this.sexo = sexo;
+	}
+
 	public ModelLogin(String login, String senha) {
 		this.login = login;
 		this.senha = senha;
 	}
 	
-	
+	public String getSexo() {
+		return sexo;
+	}
+
+	public void setSexo(String sexo) {
+		this.sexo = sexo;
+	}
+
+	public String getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(String perfil) {
+		this.perfil = perfil;
+	}
+
 	public boolean isAdmin() {
 		return admin;
 	}
@@ -104,7 +131,7 @@ public class ModelLogin implements Serializable {
 	@Override
 	public String toString() {
 		return "ModelLogin [id=" + id + ", nome=" + nome + ", email=" + email + ", login=" + login + ", senha=" + senha
-				+ "]";
+				+ ", admin=" + admin + ", perfil=" + perfil + ", sexo=" + sexo + "]";
 	}
 	
 }

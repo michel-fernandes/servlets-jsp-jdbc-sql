@@ -38,7 +38,6 @@ public class ServletUsuarioController  extends ServletGenericUtil{
 			if(acao.equals("buscarEditar")) {
 				Long id = Long.parseLong(request.getParameter("id"));
 				ModelLogin user = usuarioDAO.consultarId(id, super.getUserLogado(request));					
-				System.out.println(user.toString());				
 				List<ModelLogin> listUsers = usuarioDAO.consultarUsers(super.getUserLogado(request));							
 				request.setAttribute("listUsers", listUsers);
 				request.setAttribute("msg", "Usuário em edição");
@@ -52,9 +51,7 @@ public class ServletUsuarioController  extends ServletGenericUtil{
 			}else if(!login.isEmpty() && login!= null && acao.equals("deletarAjax")
 						&& usuarioDAO.jaExisteLogin(login)) { //alternativa a solução acima
 				usuarioDAO.deletar(login);					
-				List<ModelLogin> listUsers = usuarioDAO.consultarUsers(super.getUserLogado(request));							
-				request.setAttribute("listUsers", listUsers);
-				request.setAttribute("msg", "Usuário excluido com sucesso");
+				response.getWriter().write("Usuário excluido com sucesso");
 			}else if(!login.isEmpty() && login!= null && acao.equals("consultarUsuarioAjax")) {
 				List<ModelLogin> listUsers = usuarioDAO.consultarUsers(login, super.getUserLogado(request));					
 				Gson gson = new GsonBuilder().setPrettyPrinting().create(); //bewutify Gson
@@ -83,11 +80,19 @@ public class ServletUsuarioController  extends ServletGenericUtil{
 			String email = request.getParameter("email");
 			String login = request.getParameter("login");
 			String senha = request.getParameter("senha");
+			String perfil = request.getParameter("perfil");
+			String sexo = request.getParameter("sexo");
 			
 			if(!senha.isEmpty() && senha!= null
-					&& !nome.isEmpty() && nome!= null && !email.isEmpty() && email!= null) {
-				
-				ModelLogin modelLogin = new ModelLogin(nome, email, login, senha);
+					&& !nome.isEmpty() && nome!= null && !email.isEmpty() && email!= null
+					&& !login.isEmpty() && login!= null && !perfil.isEmpty() && perfil!= null
+					&& !sexo.isEmpty() && sexo!= null){
+				ModelLogin modelLogin = new ModelLogin(nome, email, login, senha, perfil, sexo);
+				if(perfil.contains("ADMIN")) {
+					modelLogin.setAdmin(true);
+				}else {
+					modelLogin.setAdmin(false);
+				}
 				modelLogin.setId((!id.isEmpty() && id!= null)? Long.parseLong(id): null);		
 				usuarioDAO = new UsuarioDAORepository();
 				
@@ -105,7 +110,10 @@ public class ServletUsuarioController  extends ServletGenericUtil{
 				List<ModelLogin> listUsers = usuarioDAO.consultarUsers(super.getUserLogado(request));							
 				request.setAttribute("listUsers", listUsers);
 				request.getRequestDispatcher("/principal/cadastro-usuario.jsp").forward(request, response);
+			}else {
+				erro("Obrigatório informar a senha", request, response);
 			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			erro(e.getMessage(), request, response);

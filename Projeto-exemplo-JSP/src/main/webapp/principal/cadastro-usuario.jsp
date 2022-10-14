@@ -4,6 +4,7 @@
 <html lang="en">
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="model.ModelLogin" %>
 
 <jsp:include page="head.jsp" />
 
@@ -56,6 +57,39 @@
 																		required value="${modelLogin.getEmail()}"> <span
 																		class="form-bar"></span> <label class="float-label">Email
 																		(email@gmail.com)</label>
+																</div>
+																<div class="form-group form-default form-static-label">
+																  <input type="radio" name="sexo" value="MASCULINO" <% 
+																		ModelLogin ml = (ModelLogin) request.getAttribute("modelLogin");
+																		if (ml !=null && ml.getSexo().equals("MASCULINO")){
+																			out.print(" ");
+																			out.print("checked=\"checked\"");
+																			out.print(" ");
+																		} %>>Masculino</>
+																  <input type="radio" name="sexo" value="FEMININO" <% 
+																		if (ml !=null && ml.getSexo().equals("FEMININO")){
+																			out.print(" ");
+																			out.print("checked=\"checked\"");
+																			out.print(" ");
+																		} %>>Feminino</>
+																</div>
+																<div class="form-group form-default form-static-label">
+																	<select name="perfil" id="perfil" class="form-control">
+																		<option disabled="disabled">Selecione o perfil de usuário</option>
+																		<option value="ADMIN"<% 
+																		if (ml !=null && ml.getPerfil().contains("ADMIN")){
+																			out.print(" ");
+																			out.print("selected=\"selected\"");
+																			out.print(" ");
+																		} %>>Administrador</option>
+																		<option value="DEVELOPER" <% 
+																		if (ml !=null && ml.getPerfil().contains("DEVELOPER")){
+																			out.print(" ");
+																			out.print("selected=\"selected\"");
+																			out.print(" ");
+																		} %>>Developer</option>
+																	</select><span
+																		class="form-bar"></span> <label class="float-label">Perfil de usuário</label>
 																</div>
 																<div class="form-group form-default form-static-label">
 																	<input type="text" name="login" id="login"
@@ -209,6 +243,7 @@
 					success : function(response) {
 						limparForm();
 						document.getElementById("msg").textContent = response;
+						buscarUsuarioLogin();
 					}
 
 				}).fail(
@@ -266,9 +301,7 @@
 																	+ ')">Ver</button></td></tr>');
 										}
 
-										document
-												.getElementById('totalResponse').textContent = 'Resultados: '
-												+ json.length;
+										document.getElementById('totalResponse').textContent = 'Resultados: '+ json.length;
 									}
 
 								})

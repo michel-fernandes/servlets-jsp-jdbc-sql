@@ -20,7 +20,7 @@ public class UsuarioDAORepository {
 
 	public ModelLogin criar(ModelLogin modelLogin, Long userLogado) throws SQLException {
 
-		String sql = "INSERT INTO model_login(login, senha, email, nome, usuario_id) VALUES (?,?,?,?,?)";
+		String sql = "INSERT INTO model_login(login, senha, email, nome, usuario_id, useradmin, perfil, sexo) VALUES (?,?,?,?,?,?,?,?)";
 
 		PreparedStatement statement = connection.prepareStatement(sql);
 		statement.setString(1, modelLogin.getLogin());
@@ -28,6 +28,9 @@ public class UsuarioDAORepository {
 		statement.setString(3, modelLogin.getEmail());
 		statement.setString(4, modelLogin.getNome());
 		statement.setLong(5, userLogado);
+		statement.setBoolean(6, modelLogin.isAdmin());
+		statement.setString(7, modelLogin.getPerfil());
+		statement.setString(8, modelLogin.getSexo());
 		statement.execute();
 		connection.commit();
 		
@@ -49,6 +52,8 @@ public class UsuarioDAORepository {
 			modelLogin.setNome(resultSet.getString("nome"));
 			modelLogin.setEmail(resultSet.getString("email"));
 			modelLogin.setAdmin(resultSet.getBoolean("useradmin"));
+			modelLogin.setPerfil(resultSet.getString("perfil"));
+			modelLogin.setSexo(resultSet.getString("sexo"));
 			modelLogin.setSenha(null);
 		}
 		
@@ -71,6 +76,8 @@ public class UsuarioDAORepository {
 			modelLogin.setNome(resultSet.getString("nome"));
 			modelLogin.setEmail(resultSet.getString("email"));
 			modelLogin.setAdmin(resultSet.getBoolean("useradmin"));
+			modelLogin.setPerfil(resultSet.getString("perfil"));
+			modelLogin.setSexo(resultSet.getString("sexo"));
 			modelLogin.setSenha(null);
 		}
 		
@@ -94,6 +101,8 @@ public class UsuarioDAORepository {
 			modelLogin.setNome(resultSet.getString("nome"));
 			modelLogin.setEmail(resultSet.getString("email"));
 			modelLogin.setAdmin(resultSet.getBoolean("useradmin"));
+			modelLogin.setPerfil(resultSet.getString("perfil"));
+			modelLogin.setSexo(resultSet.getString("sexo"));
 			modelLogin.setSenha(null);
 		}
 		
@@ -118,6 +127,8 @@ public class UsuarioDAORepository {
 			modelLogin.setNome(resultSet.getString("nome"));
 			modelLogin.setEmail(resultSet.getString("email"));
 			modelLogin.setAdmin(resultSet.getBoolean("useradmin"));
+			modelLogin.setPerfil(resultSet.getString("perfil"));
+			modelLogin.setSexo(resultSet.getString("sexo"));
 			modelLogin.setSenha(null);
 			listLogin.add(modelLogin);
 		}
@@ -142,6 +153,8 @@ public class UsuarioDAORepository {
 			modelLogin.setNome(resultSet.getString("nome"));
 			modelLogin.setEmail(resultSet.getString("email"));
 			modelLogin.setAdmin(resultSet.getBoolean("useradmin"));
+			modelLogin.setPerfil(resultSet.getString("perfil"));
+			modelLogin.setSexo(resultSet.getString("sexo"));
 			modelLogin.setSenha(null);
 			listLogin.add(modelLogin);
 		}
@@ -151,15 +164,18 @@ public class UsuarioDAORepository {
 	}
 	public ModelLogin atualizar(ModelLogin modelLogin, Long userLogado) throws SQLException {
 
-		String sql = "UPDATE model_login SET login=?, senha=?, email=?, nome=? WHERE id=? and userAdmin is false and usuario_id=?";
+		String sql = "UPDATE model_login SET login=?, senha=?, email=?, nome=?, useradmin=?, perfil=?, sexo=? WHERE id=? and userAdmin is false and usuario_id=?";
 
 		PreparedStatement statement = connection.prepareStatement(sql);
 		statement.setString(1, modelLogin.getLogin());
 		statement.setString(2, modelLogin.getSenha());
 		statement.setString(3, modelLogin.getEmail());
 		statement.setString(4, modelLogin.getNome());
-		statement.setLong(5, modelLogin.getId());
-		statement.setLong(6, userLogado);
+		statement.setBoolean(5, modelLogin.isAdmin());
+		statement.setString(6, modelLogin.getPerfil());
+		statement.setString(7, modelLogin.getSexo());
+		statement.setLong(8, modelLogin.getId());
+		statement.setLong(9, userLogado);
 		statement.executeUpdate();
 		connection.commit();
 		
