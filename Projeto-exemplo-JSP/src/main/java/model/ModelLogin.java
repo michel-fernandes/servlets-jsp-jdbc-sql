@@ -15,6 +15,8 @@ public class ModelLogin implements Serializable {
 	private boolean admin;
 	private String perfil;
 	private String sexo;
+	private String imagem;
+	private String formatoImagem;
 	
 	public ModelLogin() {
 		
@@ -50,6 +52,23 @@ public class ModelLogin implements Serializable {
 		this.senha = senha;
 	}
 	
+	
+	public String getImagem() {
+		return imagem;
+	}
+
+	public void setImagem(String imagem) {
+		this.imagem = imagem;
+	}
+
+	public String getFormatoImagem() {
+		return formatoImagem;
+	}
+
+	public void setFormatoImagem(String formatoImagem) {
+		this.formatoImagem = formatoImagem;
+	}
+
 	public String getSexo() {
 		return sexo;
 	}

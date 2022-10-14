@@ -34,10 +34,11 @@
 															<!--<span>Add class of <code>.form-control</code> with <code>&lt;input&gt;</code> tag</span>-->
 														</div>
 														<div class="card-block">
-															<form class="form-material"
+															<!--enctype="multipart/form-data" para enviar conteúdo com arquivo-->
+															<form class="form-material" enctype="multipart/form-data"
 																action="<%=request.getContextPath()%>/ServletUsuarioController"
 																method="post" id="form-user">
-																<input type="hidden" name="acao" id="acao" value=""></input>1
+																<input type="hidden" name="acao" id="acao" value=""></input>
 																<div class="form-group form-default form-static-label">
 																	<input type="text" name="id" id="id"
 																		class="form-control" placeholder="ID automático"
@@ -45,6 +46,20 @@
 																	<span class="form-bar"></span> <label
 																		class="float-label">ID</label>
 																</div>
+																<div class="form-group row">
+																<c:if test="${modelLogin.getImagem() != ''}">
+																	<img class="col-sm-1" alt="Imagem do perfil" id="imagemBase64" src="${modelLogin.getImagem()}">
+                                                                    <div class="col-sm-11">
+                                                                    	<input type="file" accept="images/*" id="fileFoto" name="fileFoto" onchange="visualizarImg('imagemBase64', 'fileFoto');" class="form-control"/>
+                                                                	</div>
+																</c:if>
+																<c:otherwise>
+																	<img class="col-sm-1" alt="Imagem do perfil" id="imagemBase64" src="">
+                                                                    <div class="col-sm-11">
+                                                                    	<input type="file" accept="images/*" id="fileFoto" name="fileFoto" onchange="visualizarImg('imagemBase64', 'fileFoto');" class="form-control"/>
+                                                                	</div>
+																</c:otherwise>
+                                                                </div>
 																<div class="form-group form-default form-static-label">
 																	<input type="text" name="nome" id="nome"
 																		class="form-control" placeholder="Informe o nome"
@@ -315,6 +330,21 @@
 		function verEditar(id) {
 			var urlAction = document.getElementById('form-user').action;
 			window.location.href = urlAction + '?acao=buscarEditar&id=' + id;
+		}
+		function visualizarImg(imagemBase64, fileFoto){
+			var preview = document.getElementById(imagemBase64);
+			var fileUser = document.getElementById(fileFoto).files[0];
+			var reader = new FileReader();
+			
+			reader.onloadend = function (){
+				preview.src = reader.result; /*carrega a foto na tela*/
+			};
+			
+			if(fileUser){
+				reader.readAsDataURL(fileUser); /*preview da imagem*/
+			}else{
+				preview.src = '';
+			}
 		}
 	</script>
 </body>

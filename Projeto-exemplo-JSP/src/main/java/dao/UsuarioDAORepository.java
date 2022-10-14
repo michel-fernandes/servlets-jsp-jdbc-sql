@@ -19,7 +19,7 @@ public class UsuarioDAORepository {
 	}
 
 	public ModelLogin criar(ModelLogin modelLogin, Long userLogado) throws SQLException {
-
+		
 		String sql = "INSERT INTO model_login(login, senha, email, nome, usuario_id, useradmin, perfil, sexo) VALUES (?,?,?,?,?,?,?,?)";
 
 		PreparedStatement statement = connection.prepareStatement(sql);
@@ -33,6 +33,10 @@ public class UsuarioDAORepository {
 		statement.setString(8, modelLogin.getSexo());
 		statement.execute();
 		connection.commit();
+		
+		if(modelLogin.getFormatoImagem() != null && !modelLogin.getFormatoImagem().isEmpty()) {
+			atualizarFoto(modelLogin);
+		}
 		
 		return this.consultar(modelLogin.getLogin(), userLogado);
 	}
@@ -54,6 +58,8 @@ public class UsuarioDAORepository {
 			modelLogin.setAdmin(resultSet.getBoolean("useradmin"));
 			modelLogin.setPerfil(resultSet.getString("perfil"));
 			modelLogin.setSexo(resultSet.getString("sexo"));
+			modelLogin.setImagem(resultSet.getString("imagem"));
+			modelLogin.setFormatoImagem(resultSet.getString("formato_imagem"));
 			modelLogin.setSenha(null);
 		}
 		
@@ -78,6 +84,8 @@ public class UsuarioDAORepository {
 			modelLogin.setAdmin(resultSet.getBoolean("useradmin"));
 			modelLogin.setPerfil(resultSet.getString("perfil"));
 			modelLogin.setSexo(resultSet.getString("sexo"));
+			modelLogin.setImagem(resultSet.getString("imagem"));
+			modelLogin.setFormatoImagem(resultSet.getString("formato_imagem"));
 			modelLogin.setSenha(null);
 		}
 		
@@ -103,6 +111,8 @@ public class UsuarioDAORepository {
 			modelLogin.setAdmin(resultSet.getBoolean("useradmin"));
 			modelLogin.setPerfil(resultSet.getString("perfil"));
 			modelLogin.setSexo(resultSet.getString("sexo"));
+			modelLogin.setImagem(resultSet.getString("imagem"));
+			modelLogin.setFormatoImagem(resultSet.getString("formato_imagem"));
 			modelLogin.setSenha(null);
 		}
 		
@@ -129,6 +139,8 @@ public class UsuarioDAORepository {
 			modelLogin.setAdmin(resultSet.getBoolean("useradmin"));
 			modelLogin.setPerfil(resultSet.getString("perfil"));
 			modelLogin.setSexo(resultSet.getString("sexo"));
+			modelLogin.setImagem(resultSet.getString("imagem"));
+			modelLogin.setFormatoImagem(resultSet.getString("formato_imagem"));
 			modelLogin.setSenha(null);
 			listLogin.add(modelLogin);
 		}
@@ -155,6 +167,8 @@ public class UsuarioDAORepository {
 			modelLogin.setAdmin(resultSet.getBoolean("useradmin"));
 			modelLogin.setPerfil(resultSet.getString("perfil"));
 			modelLogin.setSexo(resultSet.getString("sexo"));
+			modelLogin.setImagem(resultSet.getString("imagem"));
+			modelLogin.setFormatoImagem(resultSet.getString("formato_imagem"));
 			modelLogin.setSenha(null);
 			listLogin.add(modelLogin);
 		}
@@ -179,7 +193,23 @@ public class UsuarioDAORepository {
 		statement.executeUpdate();
 		connection.commit();
 		
+		if(modelLogin.getFormatoImagem() != null && !modelLogin.getFormatoImagem().isEmpty()) {
+			atualizarFoto(modelLogin);
+		}
+		
 		return this.consultar(modelLogin.getLogin(), userLogado);
+	}
+	
+	private void atualizarFoto(ModelLogin modelLogin) throws SQLException {
+
+		String sql = "UPDATE model_login SET imagem=?, formato_imagem=?  WHERE login=?";
+
+		PreparedStatement statement = connection.prepareStatement(sql);
+		statement.setString(1, modelLogin.getImagem());
+		statement.setString(2, modelLogin.getFormatoImagem());
+		statement.setString(3, modelLogin.getLogin());
+		statement.executeUpdate();
+		connection.commit();
 	}
 	
 	public boolean jaExisteLogin(String login) throws SQLException {

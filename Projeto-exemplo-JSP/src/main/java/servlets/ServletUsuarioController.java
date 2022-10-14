@@ -3,6 +3,10 @@ package servlets;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.tomcat.jakartaee.commons.compress.utils.IOUtils;
+import org.apache.tomcat.util.codec.binary.Base64;
+import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -12,12 +16,15 @@ import com.google.gson.JsonSyntaxException;
 
 import dao.UsuarioDAORepository;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import model.ModelLogin;
 
+@MultipartConfig //trabalha com enctype="multipart/form-data" para recebimento de dados do form
 @WebServlet(urlPatterns = {"/ServletUsuarioController"})
 public class ServletUsuarioController  extends ServletGenericUtil{
 	
@@ -88,12 +95,23 @@ public class ServletUsuarioController  extends ServletGenericUtil{
 					&& !login.isEmpty() && login!= null && !perfil.isEmpty() && perfil!= null
 					&& !sexo.isEmpty() && sexo!= null){
 				ModelLogin modelLogin = new ModelLogin(nome, email, login, senha, perfil, sexo);
+				
 				if(perfil.contains("ADMIN")) {
 					modelLogin.setAdmin(true);
 				}else {
 					modelLogin.setAdmin(false);
 				}
-				modelLogin.setId((!id.isEmpty() && id!= null)? Long.parseLong(id): null);		
+				modelLogin.setId((!id.isEmpty() && id!= null)? Long.parseLong(id): null);
+				
+				if(ServletFileUpload.isMultipartContent(request)) {
+					Part part = request.getPart("fileFoto"); /*captura a foto do form*/
+					byte[] foto = IOUtils.toByteArray(part.getInputStream()); /*coverte imagem para byte*/
+					String imagemBase64 = "data:" + part.getContentType() + ";base64," + new Base64().encodeBase64String(foto);
+					
+					modelLogin.setImagem(imagemBase64);
+					modelLogin.setFormatoImagem(part.getContentType().split("\\/")[1]);
+				}
+				
 				usuarioDAO = new UsuarioDAORepository();
 				
 				if(!usuarioDAO.jaExisteLogin(modelLogin.getLogin())) {
