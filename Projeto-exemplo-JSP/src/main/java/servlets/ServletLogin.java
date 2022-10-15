@@ -50,9 +50,9 @@ public class ServletLogin extends HttpServlet {
 				
 				if(loginDAO.autenticar(modelLogin)) {
 					ModelLogin modelLogado = usuarioDAO.consultarLogado(modelLogin.getLogin());
-					request.getSession().setAttribute("usuario", modelLogin.getLogin());
-					
+					request.getSession().setAttribute("usuario", modelLogin.getLogin());				
 					request.getSession().setAttribute("isAdmin", modelLogado.isAdmin());
+					request.getSession().setAttribute("modelLogado", modelLogado);
 							
 					if(url==null || url.equals("null")) {
 						url = "/principal/principal.jsp";

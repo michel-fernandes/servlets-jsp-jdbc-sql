@@ -68,9 +68,15 @@
 						</li>
 						<li class="waves-effect waves-light">
 							<div class="media">
-								<img class="d-flex align-self-center img-radius"
-									src="<%= request.getContextPath() %>/assets/images/avatar-4.jpg"
-									alt="Generic placeholder image">
+								<c:if test="${modelLogado.getImagem()!='' && modelLogado.getImagem()!=null}">
+									<img class="img-80 img-radius" src="${modelLogado.getImagem()}"
+										alt="User-Profile-Image">
+								</c:if>
+								<c:if test="${modelLogado.getImagem()=='' || modelLogado.getImagem()==null}">
+									<img class="img-80 img-radius"
+										src="<%=request.getContextPath()%>/assets/images/bear.png"
+										alt="User-Profile-Image">
+								</c:if>
 								<div class="media-body">
 									<h5 class="notification-user">Joseph William</h5>
 									<p class="notification-msg">Lorem ipsum dolor sit amet,
@@ -94,9 +100,13 @@
 						</li>
 					</ul></li>
 				<li class="user-profile header-notification"><a href="#!"
-					class="waves-effect waves-light"> <img
-						src="<%= request.getContextPath() %>/assets/images/avatar-4.jpg" class="img-radius"
-						alt="User-Profile-Image"> <span><%= session.getAttribute("usuario") %></span> <i
+					class="waves-effect waves-light"> 
+					<c:if test="${modelLogado.getImagem()!='' && modelLogado.getImagem()!=null}">
+						<img class="img-80 img-radius" src="${modelLogado.getImagem()}">
+						</c:if> 
+						<c:if test="${modelLogado.getImagem()=='' || modelLogado.getImagem()==null}">
+							<img class="img-80 img-radius" src="<%=request.getContextPath()%>/assets/images/bear.png">
+						</c:if><span><%= session.getAttribute("usuario") %></span> <i
 						class="ti-angle-down"></i>
 				</a>
 					<ul class="show-notification profile-notification">

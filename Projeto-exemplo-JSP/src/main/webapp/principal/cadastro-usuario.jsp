@@ -47,12 +47,12 @@
 																		class="float-label">ID</label>
 																</div>
 																<div class="form-group row">
-                                                                    <c:if test="${modelLogin.getNome()!=''}">
-                                                                    	<img class="col-sm-1" alt="Imagem do perfil" id="imagemBase64BD" src="${modelLogin.getNome()}">
+                                                                    <c:if test="${modelLogin.getImagem()!='' && modelLogin.getImagem()!=null}">
+                                                                    	<img class="col-sm-1" alt="Imagem do perfil" id="imagemBase64BD" src="${modelLogin.getImagem()}">
                                                                     </c:if>
-                                                                    <c:otherwise>
-                                                                    	<img class="col-sm-1" alt="Imagem do perfil" id="imagemBase64" src="../assets/images/avatar-blank.jpg">
-                                                                    </c:otherwise>
+                                                                    <c:if test="${modelLogin.getImagem()=='' || modelLogin.getImagem()==null}">
+                                                                    	<img class="col-sm-1" alt="Imagem do perfil" id="imagemBase64" src="<%= request.getContextPath() %>/assets/images/bear.png">
+                                                                    </c:if>
                                                                     <div class="col-sm-11">
                                                                     	<input type="file" accept="images/*" id="fileFoto" name="fileFoto" onchange="visualizarImg('imagemBase64', 'fileFoto');" class="form-control"/>
                                                                 	</div>
