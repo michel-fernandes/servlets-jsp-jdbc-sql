@@ -58,7 +58,7 @@ public class ServletUsuarioController  extends ServletGenericUtil{
 			}else if(acao.equals("downloadImagem")){
 				Long id = Long.parseLong(request.getParameter("id"));
 				ModelLogin user = usuarioDAO.consultarId(id, super.getUserLogado(request));		
-				
+				//cadastro-usuario download da imagem do perfil
 				if(user.getImagem()!="" && !user.getImagem().isEmpty()) {
 					response.setHeader("Content-Disposition", "attachment;filename=download_image."+ user.getFormatoImagem());
 					response.getOutputStream().write(new Base64().decodeBase64(user.getImagem().split("\\,")[1]));
