@@ -46,16 +46,22 @@
 																	<span class="form-bar"></span> <label
 																		class="float-label">ID</label>
 																</div>
-																<div class="form-group row">
-                                                                    <c:if test="${modelLogin.getImagem()!='' && modelLogin.getImagem()!=null}">
-                                                                    	<img class="col-sm-1" alt="Imagem do perfil" id="imagemBase64BD" src="${modelLogin.getImagem()}">
-                                                                    </c:if>
-                                                                    <c:if test="${modelLogin.getImagem()=='' || modelLogin.getImagem()==null}">
-                                                                    	<img class="col-sm-1" alt="Imagem do perfil" id="imagemBase64" src="<%= request.getContextPath() %>/assets/images/bear.png">
-                                                                    </c:if>
-                                                                    <div class="col-sm-11">
-                                                                    	<input type="file" accept="images/*" id="fileFoto" name="fileFoto" onchange="visualizarImg('imagemBase64', 'fileFoto');" class="form-control"/>
-                                                                	</div>
+																<div class="form-group form-default input-group mb-4">
+                                                                    <div class="input-group-prepend">
+	                                                                    <c:if test="${modelLogin.getImagem()!='' && modelLogin.getImagem()!=null}">
+	                                                                    	<a href="<%=request.getContextPath()%>/ServletUsuarioController?acao=downloadImagem&id=${modelLogin.getId()}">
+	                                                                    		<img alt="Imagem do perfil" id="imagemBase64" 
+	                                                                    		src="${modelLogin.getImagem()}" width="70px">
+	                                                                    	</a>
+	                                                                    </c:if>
+	                                                                    <c:if test="${modelLogin.getImagem()=='' || modelLogin.getImagem()==null}">
+	                                                                    	<img alt="Imagem do perfil" id="imagemBase64" 
+	                                                                    	src="<%= request.getContextPath() %>/assets/images/bear.png" width="70px">
+	                                                                    </c:if>
+                                                                    </div>
+                                                                    <input type="file" accept="images/*" id="fileFoto" name="fileFoto" 
+                                                                    	onchange="visualizarImg('imagemBase64', 'fileFoto');" class="form-control-file" 
+                                                                    	style="margin-top: 15px; margin-left: 5px;"/>
                                                                 </div>
 																<div class="form-group form-default form-static-label">
 																	<input type="text" name="nome" id="nome"
