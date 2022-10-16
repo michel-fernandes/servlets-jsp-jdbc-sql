@@ -110,6 +110,48 @@
 																		class="form-bar"></span> <label class="float-label">Perfil de usuário</label>
 																</div>
 																<div class="form-group form-default form-static-label">
+																	<input type="text" name="cep" id="cep" 
+																		class="form-control" placeholder="Informe o CEP com 8 digitos"
+																		required autocomplete="off"
+																		value="${modelLogin.getCep()}"> <span
+																		class="form-bar"></span> <label class="float-label">CEP</label>
+																</div>
+																<div class="form-group form-default form-static-label">
+																	<input type="text" name="logradouro" id="logradouro"
+																		class="form-control" placeholder="Logradouro"
+																		required autocomplete="off" disabled="disabled"
+																		value="${modelLogin.getLogradouro()}"> <span
+																		class="form-bar"></span> <label class="float-label">Logradouro</label>
+																</div>
+																<div class="form-group form-default form-static-label">
+																	<input type="text" name="numero" id="numero"
+																		class="form-control" placeholder="Informe o numero"
+																		required autocomplete="off"
+																		value="${modelLogin.getNumero()}"> <span
+																		class="form-bar"></span> <label class="float-label">Número</label>
+																</div>
+																<div class="form-group form-default form-static-label">
+																	<input type="text" name="bairro" id="bairro" 
+																		class="form-control" placeholder="Bairro"
+																		required autocomplete="off" disabled="disabled"
+																		value="${modelLogin.getBairro()}"> <span
+																		class="form-bar"></span> <label class="float-label">Bairro</label>
+																</div>
+																<div class="form-group form-default form-static-label">
+																	<input type="text" name="localidade" id="localidade"
+																		class="form-control" placeholder="Cidade"
+																		required autocomplete="off" disabled="disabled"
+																		value="${modelLogin.getLocalidade()}"> <span
+																		class="form-bar"></span> <label class="float-label">Cidade</label>
+																</div>
+																<div class="form-group form-default form-static-label">
+																	<input type="text" name="uf" id="uf"
+																		class="form-control" placeholder="UF"
+																		required autocomplete="off" disabled="disabled"
+																		value="${modelLogin.getUf()}"> <span
+																		class="form-bar"></span> <label class="float-label">UF</label>
+																</div>
+																<div class="form-group form-default form-static-label">
 																	<input type="text" name="login" id="login"
 																		class="form-control" placeholder="Informe o login"
 																		required autocomplete="off"
@@ -349,6 +391,68 @@
 				preview.src = '';
 			}
 		}
+		
+		$(document).ready(function() {
+
+            function limpa_formulário_cep() {
+                // Limpa valores do formulário de cep.
+                $("#rua").val("");
+                $("#bairro").val("");
+                $("#cidade").val("");
+                $("#uf").val("");
+                $("#ibge").val("");
+            }
+            
+            //Quando o campo cep perde o foco.
+            $("#cep").blur(function() {
+
+                //Nova variável "cep" somente com dígitos.
+                var cep = $(this).val().replace(/\D/g, '');
+
+                //Verifica se campo cep possui valor informado.
+                if (cep != "") {
+
+                    //Expressão regular para validar o CEP.
+                    var validacep = /^[0-9]{8}$/;
+
+                    //Valida o formato do CEP.
+                    if(validacep.test(cep)) {
+
+                        //Preenche os campos com "..." enquanto consulta webservice.
+                        $("#logradouro").val("...");
+                        $("#bairro").val("...");
+                        $("#localidade").val("...");
+                        $("#uf").val("...");
+
+                        //Consulta o webservice viacep.com.br/
+                        $.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
+
+                            if (!("erro" in dados)) {
+                                //Atualiza os campos com os valores da consulta.
+                                $("#logradouro").val(dados.logradouro);
+                                $("#bairro").val(dados.bairro);
+                                $("#localidade").val(dados.localidade);
+                                $("#uf").val(dados.uf);
+                            } //end if.
+                            else {
+                                //CEP pesquisado não foi encontrado.
+                                limpa_formulário_cep();
+                                alert("CEP não encontrado.");
+                            }
+                        });
+                    } //end if.
+                    else {
+                        //cep é inválido.
+                        limpa_formulário_cep();
+                        alert("Formato de CEP inválido.");
+                    }
+                } //end if.
+                else {
+                    //cep sem valor, limpa formulário.
+                    limpa_formulário_cep();
+                }
+            });
+        });
 	</script>
 </body>
 </html>

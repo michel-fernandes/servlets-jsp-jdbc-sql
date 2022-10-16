@@ -98,11 +98,19 @@ public class ServletUsuarioController  extends ServletGenericUtil{
 			String perfil = request.getParameter("perfil");
 			String sexo = request.getParameter("sexo");
 			
+			String cep = request.getParameter("cep");
+			String logradouro = request.getParameter("logradouro");
+			String bairro = request.getParameter("bairro");
+			String localidade = request.getParameter("localidade");
+			String uf = request.getParameter("uf");
+			String numero = request.getParameter("numero");
+			
 			if(!senha.isEmpty() && senha!= null
 					&& !nome.isEmpty() && nome!= null && !email.isEmpty() && email!= null
 					&& !login.isEmpty() && login!= null && !perfil.isEmpty() && perfil!= null
 					&& !sexo.isEmpty() && sexo!= null){
 				ModelLogin modelLogin = new ModelLogin(nome, email, login, senha, perfil, sexo);
+				modelLogin.setEndereco(cep, logradouro, bairro, localidade, uf, numero);
 				
 				if(perfil.contains("ADMIN")) {
 					modelLogin.setAdmin(true);

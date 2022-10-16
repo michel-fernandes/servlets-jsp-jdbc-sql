@@ -18,10 +18,35 @@ public class ModelLogin implements Serializable {
 	private String imagem;
 	private String formatoImagem;
 	
+	private String cep;
+	private String logradouro;
+	private String bairro;
+	private String localidade;
+	private String uf;
+	private String numero;
+	
 	public ModelLogin() {
 		
 	}
 	
+	
+	public ModelLogin(String nome, String email, String login, String senha, boolean admin, String perfil, String sexo,
+			String cep, String logradouro, String bairro, String localidade, String uf, String numero) {
+		this.nome = nome;
+		this.email = email;
+		this.login = login;
+		this.senha = senha;
+		this.admin = admin;
+		this.perfil = perfil;
+		this.sexo = sexo;
+		this.cep = cep;
+		this.logradouro = logradouro;
+		this.bairro = bairro;
+		this.localidade = localidade;
+		this.uf = uf;
+		this.numero = numero;
+	}
+
 	public ModelLogin(Long id, String nome, String email, String login, String senha) {
 		this.id = id;
 		this.nome = nome;
@@ -53,6 +78,54 @@ public class ModelLogin implements Serializable {
 	}
 	
 	
+	public String getCep() {
+		return cep;
+	}
+
+	public void setCep(String cep) {
+		this.cep = cep;
+	}
+
+	public String getLogradouro() {
+		return logradouro;
+	}
+
+	public void setLogradouro(String logradouro) {
+		this.logradouro = logradouro;
+	}
+
+	public String getBairro() {
+		return bairro;
+	}
+
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
+	}
+
+	public String getLocalidade() {
+		return localidade;
+	}
+
+	public void setLocalidade(String localidade) {
+		this.localidade = localidade;
+	}
+
+	public String getUf() {
+		return uf;
+	}
+
+	public void setUf(String uf) {
+		this.uf = uf;
+	}
+
+	public String getNumero() {
+		return numero;
+	}
+
+	public void setNumero(String numero) {
+		this.numero = numero;
+	}
+
 	public String getImagem() {
 		return imagem;
 	}
@@ -128,6 +201,15 @@ public class ModelLogin implements Serializable {
 	}
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+	
+	public void setEndereco(String cep, String logradouro, String bairro, String localidade, String uf, String numero) {
+		this.cep = cep;
+		this.logradouro = logradouro;
+		this.bairro = bairro;
+		this.localidade = localidade;
+		this.uf = uf;
+		this.numero = numero;
 	}
 
 	@Override
