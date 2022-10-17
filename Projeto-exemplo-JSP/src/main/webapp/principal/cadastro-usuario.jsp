@@ -112,35 +112,35 @@
 																<div class="form-group form-default form-static-label">
 																	<input type="text" name="cep" id="cep" 
 																		class="form-control" placeholder="Informe o CEP com 8 digitos"
-																		required autocomplete="off"
+																		required="required" autocomplete="off"
 																		value="${modelLogin.getCep()}"> <span
 																		class="form-bar"></span> <label class="float-label">CEP</label>
 																</div>
 																<div class="form-group form-default form-static-label">
 																	<input type="text" name="logradouro" id="logradouro"
 																		class="form-control" placeholder="Logradouro"
-																		required autocomplete="off" disabled="disabled"
+																		required="required" autocomplete="off" disabled="disabled"
 																		value="${modelLogin.getLogradouro()}"> <span
 																		class="form-bar"></span> <label class="float-label">Logradouro</label>
 																</div>
 																<div class="form-group form-default form-static-label">
 																	<input type="text" name="numero" id="numero"
 																		class="form-control" placeholder="Informe o numero"
-																		required autocomplete="off"
+																		required="required" autocomplete="off"
 																		value="${modelLogin.getNumero()}"> <span
 																		class="form-bar"></span> <label class="float-label">Número</label>
 																</div>
 																<div class="form-group form-default form-static-label">
 																	<input type="text" name="bairro" id="bairro" 
 																		class="form-control" placeholder="Bairro"
-																		required autocomplete="off" disabled="disabled"
+																		required="required" autocomplete="off" disabled="disabled"
 																		value="${modelLogin.getBairro()}"> <span
 																		class="form-bar"></span> <label class="float-label">Bairro</label>
 																</div>
 																<div class="form-group form-default form-static-label">
 																	<input type="text" name="localidade" id="localidade"
 																		class="form-control" placeholder="Cidade"
-																		required autocomplete="off" disabled="disabled"
+																		required="required" autocomplete="off" disabled="disabled"
 																		value="${modelLogin.getLocalidade()}"> <span
 																		class="form-bar"></span> <label class="float-label">Cidade</label>
 																</div>
@@ -254,8 +254,8 @@
 											</div>
 										</div>
 										<div class="card-block table-border-style">
-											<div class="table-responsive">
-												<table class="table">
+											<div class="table-responsive" style="overflow: scroll;">
+												<table class="table" id="tabelaResultadosView">
 													<thead>
 														<tr>
 															<th>Id</th>
@@ -278,6 +278,19 @@
 													</tbody>
 												</table>
 											</div>
+
+											<nav aria-label="Page navigation example">
+												<ul class="pagination">
+													<%
+														int totalPagina= (int) request.getAttribute("totalPaginas");
+													
+														for(int i=0; i<totalPagina; i++){
+															String url = request.getContextPath() +"/ServletUsuarioController?acao=paginar&de="+(i*5); //a partir do registro "de" mais 5 do offset, tb definido no DAORepository
+															out.print("<li class=\"page-item\"><a class=\"page-link\" href=\""+url+"\">"+(i+1)+"</a></li>");
+														}
+													%>
+												</ul>
+											</nav>
 										</div>
 									</div>
 									<!-- Basic table card end -->

@@ -148,7 +148,7 @@ public class UsuarioDAORepository {
 	
 	public List<ModelLogin> consultarUsers(String login , Long userLogado) throws SQLException {
 
-		String sql = "select * from public.model_login where upper(login) like upper(?) and userAdmin is false and usuario_id=?";
+		String sql = "select * from public.model_login where upper(login) like upper(?) and userAdmin is false and usuario_id=? order by nome";
 		PreparedStatement statement = connection.prepareStatement(sql);
 		statement.setString(1, "%" + login + "%");
 		statement.setLong(2, userLogado);
@@ -183,7 +183,7 @@ public class UsuarioDAORepository {
 	
 	public List<ModelLogin> consultarUsers(Long userLogado) throws SQLException {
 
-		String sql = "select * from public.model_login where userAdmin is false and usuario_id=?";
+		String sql = "select * from public.model_login where userAdmin is false and usuario_id=? order by nome" ;
 		PreparedStatement statement = connection.prepareStatement(sql);
 		statement.setLong(1, userLogado);
 		ResultSet resultSet = statement.executeQuery();
@@ -214,6 +214,42 @@ public class UsuarioDAORepository {
 		return listLogin;
 		
 	}
+	
+	public List<ModelLogin> consultarUsersPaginado(Long userLogado, Long offset) throws SQLException {
+		
+		String sql = "select * from public.model_login where userAdmin is false and usuario_id=? order by nome offset ? limit 5";
+		PreparedStatement statement = connection.prepareStatement(sql);
+		statement.setLong(1, userLogado);
+		statement.setLong(2, offset);
+		ResultSet resultSet = statement.executeQuery();
+		
+		List<ModelLogin> listLogin = new ArrayList<ModelLogin>();
+		
+		while(resultSet.next()) {
+			ModelLogin modelLogin = new ModelLogin();
+			modelLogin.setId(resultSet.getLong("id"));
+			modelLogin.setLogin(resultSet.getString("login"));
+			modelLogin.setNome(resultSet.getString("nome"));
+			modelLogin.setEmail(resultSet.getString("email"));
+			modelLogin.setAdmin(resultSet.getBoolean("useradmin"));
+			modelLogin.setPerfil(resultSet.getString("perfil"));
+			modelLogin.setSexo(resultSet.getString("sexo"));
+			modelLogin.setImagem(resultSet.getString("imagem"));
+			modelLogin.setFormatoImagem(resultSet.getString("formato_imagem"));
+			modelLogin.setCep(resultSet.getString("cep"));
+			modelLogin.setLogradouro(resultSet.getString("logradouro"));
+			modelLogin.setBairro(resultSet.getString("bairro"));
+			modelLogin.setLocalidade(resultSet.getString("localidade"));
+			modelLogin.setUf(resultSet.getString("uf"));
+			modelLogin.setNumero(resultSet.getString("numero"));
+			modelLogin.setSenha(null);
+			listLogin.add(modelLogin);
+		}
+		
+		return listLogin;
+		
+	}
+	
 	public ModelLogin atualizar(ModelLogin modelLogin, Long userLogado) throws SQLException {
 
 		String sql = "UPDATE model_login SET login=?, senha=?, email=?, nome=?, useradmin=?, perfil=?, sexo=?, cep=?, logradouro=?, bairro=?, localidade=?, uf=?, numero=?  WHERE id=? and userAdmin is false and usuario_id=?";
@@ -278,6 +314,29 @@ public class UsuarioDAORepository {
 		statement.executeUpdate();
 		connection.commit();
 		
+	}
+	
+	public int totalPagina(Long userLogado) throws SQLException {
+		
+		String sql = "select count(1) as total from model_login where userAdmin is false and usuario_id=?";
+		
+		PreparedStatement statement = connection.prepareStatement(sql);
+		statement.setLong(1, userLogado);
+		ResultSet resultSet = statement.executeQuery();
+		
+		Double paginas = 0.;
+		
+		if(resultSet.next()) {		
+			Double cadastros = resultSet.getDouble("total");
+			Double usersPorPagina = 5.;
+			paginas = cadastros/usersPorPagina;
+			Double resto = cadastros%usersPorPagina;
+			if(resto>0) {
+				paginas++;
+			}
+		}
+		
+		return paginas.intValue();
 	}
 
 }

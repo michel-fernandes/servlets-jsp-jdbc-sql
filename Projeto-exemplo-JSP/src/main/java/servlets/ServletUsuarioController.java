@@ -49,11 +49,13 @@ public class ServletUsuarioController  extends ServletGenericUtil{
 				request.setAttribute("listUsers", listUsers);
 				request.setAttribute("msg", "Usuário em edição");
 				request.setAttribute("modelLogin", user);
+				request.setAttribute("totalPaginas", usuarioDAO.totalPagina(super.getUserLogado(request)));
 				request.getRequestDispatcher("/principal/cadastro-usuario.jsp").forward(request, response);
 			} else if(acao.equals("listarUser")) {
 				List<ModelLogin> listUsers = usuarioDAO.consultarUsers(super.getUserLogado(request));							
 				request.setAttribute("listUsers", listUsers);
 				request.setAttribute("msg", "Usuários carregados");
+				request.setAttribute("totalPaginas", usuarioDAO.totalPagina(super.getUserLogado(request)));
 				request.getRequestDispatcher("/principal/cadastro-usuario.jsp").forward(request, response);
 			}else if(acao.equals("downloadImagem")){
 				Long id = Long.parseLong(request.getParameter("id"));
@@ -63,6 +65,12 @@ public class ServletUsuarioController  extends ServletGenericUtil{
 					response.setHeader("Content-Disposition", "attachment;filename=download_image."+ user.getFormatoImagem());
 					response.getOutputStream().write(new Base64().decodeBase64(user.getImagem().split("\\,")[1]));
 				}
+			}else if(acao.equals("paginar")) {
+				Long de = Long.parseLong(request.getParameter("de"));
+				List<ModelLogin> listUsers = usuarioDAO.consultarUsersPaginado(super.getUserLogado(request), de);							
+				request.setAttribute("listUsers", listUsers);
+				request.setAttribute("totalPaginas", usuarioDAO.totalPagina(super.getUserLogado(request)));
+				request.getRequestDispatcher("/principal/cadastro-usuario.jsp").forward(request, response);
 			}else if(!login.isEmpty() && login!= null && acao.equals("deletarAjax")
 						&& usuarioDAO.jaExisteLogin(login)) { //alternativa a solução acima
 				usuarioDAO.deletar(login);					
@@ -77,6 +85,7 @@ public class ServletUsuarioController  extends ServletGenericUtil{
 				List<ModelLogin> listUsers = usuarioDAO.consultarUsers(super.getUserLogado(request));							
 				request.setAttribute("listUsers", listUsers);
 				request.setAttribute("msg", "Usuário excluido com sucesso");
+				request.setAttribute("totalPaginas", usuarioDAO.totalPagina(super.getUserLogado(request)));
 				request.getRequestDispatcher("/principal/cadastro-usuario.jsp").forward(request, response);
 			}else {
 				throw new Exception("Usuário não encontrado");
@@ -136,13 +145,18 @@ public class ServletUsuarioController  extends ServletGenericUtil{
 					request.setAttribute("msg", "Usuário criado com sucesso");
 					request.setAttribute("modelLogin", modelLogin);
 				}else {
-					modelLogin = usuarioDAO.atualizar(modelLogin, super.getUserLogado(request));
-					System.out.println(modelLogin.toString());				
-					request.setAttribute("msg", "Usuário atualizado com sucesso");
-					request.setAttribute("modelLogin", modelLogin);
+					if(!id.isEmpty() && id!= null) {
+						modelLogin = usuarioDAO.atualizar(modelLogin, super.getUserLogado(request));
+						System.out.println(modelLogin.toString());				
+						request.setAttribute("msg", "Usuário atualizado com sucesso");
+						request.setAttribute("modelLogin", modelLogin);
+					}else {
+						erro("Login existente", request, response);
+					}
 				}
 				List<ModelLogin> listUsers = usuarioDAO.consultarUsers(super.getUserLogado(request));							
 				request.setAttribute("listUsers", listUsers);
+				request.setAttribute("totalPaginas", usuarioDAO.totalPagina(super.getUserLogado(request)));
 				request.getRequestDispatcher("/principal/cadastro-usuario.jsp").forward(request, response);
 			}else {
 				erro("Obrigatório informar a senha", request, response);
