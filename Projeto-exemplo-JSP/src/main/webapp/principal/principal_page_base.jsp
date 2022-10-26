@@ -23,7 +23,7 @@
 									<!-- Page-body start -->
 									<div class="page-body">
 										<div class="row">
-										<h1>Conteúdo da página</h1>
+										<h1>Conteúdo das páginas do Projeto Java EE</h1>
 										</div>
 									</div>
 									<!-- Page-body end -->

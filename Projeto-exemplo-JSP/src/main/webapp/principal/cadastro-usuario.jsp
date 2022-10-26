@@ -4,7 +4,7 @@
 <html lang="en">
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="model.ModelLogin" %>
+<%@ page import="model.ModelLogin"%>
 
 <jsp:include page="head.jsp" />
 
@@ -47,22 +47,28 @@
 																		class="float-label">ID</label>
 																</div>
 																<div class="form-group form-default input-group mb-4">
-                                                                    <div class="input-group-prepend">
-	                                                                    <c:if test="${modelLogin.getImagem()!='' && modelLogin.getImagem()!=null}">
-	                                                                    	<a href="<%=request.getContextPath()%>/ServletUsuarioController?acao=downloadImagem&id=${modelLogin.getId()}">
-	                                                                    		<img alt="Imagem do perfil" id="imagemBase64" 
-	                                                                    		src="${modelLogin.getImagem()}" width="70px">
-	                                                                    	</a>
-	                                                                    </c:if>
-	                                                                    <c:if test="${modelLogin.getImagem()=='' || modelLogin.getImagem()==null}">
-	                                                                    	<img alt="Imagem do perfil" id="imagemBase64" 
-	                                                                    	src="<%= request.getContextPath() %>/assets/images/bear.png" width="70px">
-	                                                                    </c:if>
-                                                                    </div>
-                                                                    <input type="file" accept="images/*" id="fileFoto" name="fileFoto" 
-                                                                    	onchange="visualizarImg('imagemBase64', 'fileFoto');" class="form-control-file" 
-                                                                    	style="margin-top: 15px; margin-left: 5px;"/>
-                                                                </div>
+																	<div class="input-group-prepend">
+																		<c:if
+																			test="${modelLogin.getImagem()!='' && modelLogin.getImagem()!=null}">
+																			<a
+																				href="<%=request.getContextPath()%>/ServletUsuarioController?acao=downloadImagem&id=${modelLogin.getId()}">
+																				<img alt="Imagem do perfil" id="imagemBase64"
+																				src="${modelLogin.getImagem()}" width="70px">
+																			</a>
+																		</c:if>
+																		<c:if
+																			test="${modelLogin.getImagem()=='' || modelLogin.getImagem()==null}">
+																			<img alt="Imagem do perfil" id="imagemBase64"
+																				src="<%=request.getContextPath()%>/assets/images/bear.png"
+																				width="70px">
+																		</c:if>
+																	</div>
+																	<input type="file" accept="images/*" id="fileFoto"
+																		name="fileFoto"
+																		onchange="visualizarImg('imagemBase64', 'fileFoto');"
+																		class="form-control-file"
+																		style="margin-top: 15px; margin-left: 5px;" />
+																</div>
 																<div class="form-group form-default form-static-label">
 																	<input type="text" name="nome" id="nome"
 																		class="form-control" placeholder="Informe o nome"
@@ -77,41 +83,43 @@
 																		(email@gmail.com)</label>
 																</div>
 																<div class="form-group form-default form-static-label">
-																  <input type="radio" name="sexo" value="MASCULINO" <% 
-																		ModelLogin ml = (ModelLogin) request.getAttribute("modelLogin");
-																		if (ml !=null && ml.getSexo().equals("MASCULINO")){
-																			out.print(" ");
-																			out.print("checked=\"checked\"");
-																			out.print(" ");
-																		} %>>Masculino</>
-																  <input type="radio" name="sexo" value="FEMININO" <% 
-																		if (ml !=null && ml.getSexo().equals("FEMININO")){
-																			out.print(" ");
-																			out.print("checked=\"checked\"");
-																			out.print(" ");
-																		} %>>Feminino</>
+																	<input type="radio" name="sexo" value="MASCULINO"
+																		<%ModelLogin ml = (ModelLogin) request.getAttribute("modelLogin");
+if (ml != null && ml.getSexo().equals("MASCULINO")) {
+	out.print(" ");
+	out.print("checked=\"checked\"");
+	out.print(" ");
+}%>>Masculino</>
+																	<input type="radio" name="sexo" value="FEMININO"
+																		<%if (ml != null && ml.getSexo().equals("FEMININO")) {
+	out.print(" ");
+	out.print("checked=\"checked\"");
+	out.print(" ");
+}%>>Feminino</>
 																</div>
 																<div class="form-group form-default form-static-label">
 																	<select name="perfil" id="perfil" class="form-control">
-																		<option disabled="disabled">Selecione o perfil de usuário</option>
-																		<option value="ADMIN"<% 
-																		if (ml !=null && ml.getPerfil().contains("ADMIN")){
-																			out.print(" ");
-																			out.print("selected=\"selected\"");
-																			out.print(" ");
-																		} %>>Administrador</option>
-																		<option value="DEVELOPER" <% 
-																		if (ml !=null && ml.getPerfil().contains("DEVELOPER")){
-																			out.print(" ");
-																			out.print("selected=\"selected\"");
-																			out.print(" ");
-																		} %>>Developer</option>
-																	</select><span
-																		class="form-bar"></span> <label class="float-label">Perfil de usuário</label>
+																		<option disabled="disabled">Selecione o
+																			perfil de usuário</option>
+																		<option value="ADMIN"
+																			<%if (ml != null && ml.getPerfil().contains("ADMIN")) {
+	out.print(" ");
+	out.print("selected=\"selected\"");
+	out.print(" ");
+}%>>Administrador</option>
+																		<option value="DEVELOPER"
+																			<%if (ml != null && ml.getPerfil().contains("DEVELOPER")) {
+	out.print(" ");
+	out.print("selected=\"selected\"");
+	out.print(" ");
+}%>>Developer</option>
+																	</select><span class="form-bar"></span> <label
+																		class="float-label">Perfil de usuário</label>
 																</div>
 																<div class="form-group form-default form-static-label">
-																	<input type="text" name="cep" id="cep" 
-																		class="form-control" placeholder="Informe o CEP com 8 digitos"
+																	<input type="text" name="cep" id="cep"
+																		class="form-control"
+																		placeholder="Informe o CEP com 8 digitos"
 																		required="required" autocomplete="off"
 																		value="${modelLogin.getCep()}"> <span
 																		class="form-bar"></span> <label class="float-label">CEP</label>
@@ -119,7 +127,7 @@
 																<div class="form-group form-default form-static-label">
 																	<input type="text" name="logradouro" id="logradouro"
 																		class="form-control" placeholder="Logradouro"
-																		required="required" autocomplete="off" disabled="disabled"
+																		required="required" autocomplete="off"
 																		value="${modelLogin.getLogradouro()}"> <span
 																		class="form-bar"></span> <label class="float-label">Logradouro</label>
 																</div>
@@ -131,25 +139,25 @@
 																		class="form-bar"></span> <label class="float-label">Número</label>
 																</div>
 																<div class="form-group form-default form-static-label">
-																	<input type="text" name="bairro" id="bairro" 
+																	<input type="text" name="bairro" id="bairro"
 																		class="form-control" placeholder="Bairro"
-																		required="required" autocomplete="off" disabled="disabled"
+																		required="required" autocomplete="off"
 																		value="${modelLogin.getBairro()}"> <span
 																		class="form-bar"></span> <label class="float-label">Bairro</label>
 																</div>
 																<div class="form-group form-default form-static-label">
 																	<input type="text" name="localidade" id="localidade"
 																		class="form-control" placeholder="Cidade"
-																		required="required" autocomplete="off" disabled="disabled"
+																		required="required" autocomplete="off"
 																		value="${modelLogin.getLocalidade()}"> <span
 																		class="form-bar"></span> <label class="float-label">Cidade</label>
 																</div>
 																<div class="form-group form-default form-static-label">
 																	<input type="text" name="uf" id="uf"
-																		class="form-control" placeholder="UF"
-																		required autocomplete="off" disabled="disabled"
-																		value="${modelLogin.getUf()}"> <span
-																		class="form-bar"></span> <label class="float-label">UF</label>
+																		class="form-control" placeholder="UF" required
+																		autocomplete="off" value="${modelLogin.getUf()}">
+																	<span class="form-bar"></span> <label
+																		class="float-label">UF</label>
 																</div>
 																<div class="form-group form-default form-static-label">
 																	<input type="text" name="login" id="login"
@@ -219,6 +227,10 @@
 																					</tbody>
 																				</table>
 																			</div>
+																			<nav aria-label="Page navigation example">
+																				<ul class="pagination" id="ulPaginacaoUserAjax"></ul>
+																			</nav>
+
 																			<span id="totalResponse"></span>
 																			<div class="modal-footer">
 																				<button type="button" class="btn btn-secondary"
@@ -272,7 +284,8 @@
 																<td><c:out value="${ml.nome}"></c:out></td>
 																<td><c:out value="${ml.email}"></c:out></td>
 																<td><c:out value="${ml.login}"></c:out></td>
-																<td><a href="<%= request.getContextPath() %>/ServletUsuarioController?acao=buscarEditar&id=${ml.id}">Ver</a></td>
+																<td><a
+																	href="<%= request.getContextPath() %>/ServletUsuarioController?acao=buscarEditar&id=${ml.id}">Ver</a></td>
 															</tr>
 														</c:forEach>
 													</tbody>
@@ -282,12 +295,12 @@
 											<nav aria-label="Page navigation example">
 												<ul class="pagination">
 													<%
-														int totalPagina= (int) request.getAttribute("totalPaginas");
-													
-														for(int i=0; i<totalPagina; i++){
-															String url = request.getContextPath() +"/ServletUsuarioController?acao=paginar&de="+(i*5); //a partir do registro "de" mais 5 do offset, tb definido no DAORepository
-															out.print("<li class=\"page-item\"><a class=\"page-link\" href=\""+url+"\">"+(i+1)+"</a></li>");
-														}
+													int totalPagina = (int) request.getAttribute("totalPaginas");
+
+													for (int i = 0; i < totalPagina; i++) {
+														String url = request.getContextPath() + "/ServletUsuarioController?acao=paginar&de=" + (i * 5); //a partir do registro "de" mais 5 do offset, tb definido no DAORepository
+														out.print("<li class=\"page-item\"><a class=\"page-link\" href=\"" + url + "\">" + (i + 1) + "</a></li>");
+													}
 													%>
 												</ul>
 											</nav>
@@ -345,25 +358,21 @@
 
 			if (loginBusca != null && loginBusca != ''
 					&& loginBusca.trim() != '') {
-				$
-						.ajax(
-								{
-
+				$.ajax({
 									method : "get",
 									url : urlAction,
 									data : "&login=" + loginBusca
-											+ "&acao=consultarUsuarioAjax",
-									success : function(response) {
+											+ "&acao=consultarUsuarioAjax&de=0",
+									success : function(response, textStatus,
+											xhr) {
 										const json = JSON.parse(response);
 										console.info(response);
 										console.info(json);
-										$(
-												'#tabela-consulta-usuario > tbody > tr')
-												.remove();
+										$('#tabela-consulta-usuario > tbody > tr').remove();
+										$('#ulPaginacaoUserAjax > li').remove();
 
 										for (var p = 0; p < json.length; p++) {
-											$(
-													'#tabela-consulta-usuario > tbody')
+											$('#tabela-consulta-usuario > tbody')
 													.append(
 															'<tr><td>'
 																	+ json[p].id
@@ -375,6 +384,12 @@
 										}
 
 										document.getElementById('totalResponse').textContent = 'Resultados: '+ json.length;
+										var totalPaginas = xhr.getResponseHeader("totalPaginas");
+											for(var p=0; p< totalPaginas; p++){
+												var url = urlAction+ "?login=" + loginBusca	+ "&acao=consultarUsuarioAjaxPage&de=" + (p * 5); //a partir do registro "de" mais 5 do offset, tb definido no DAORepository
+												+ "&acao=consultarUsuarioAjax",
+												$("#ulPaginacaoUserAjax").append('<li class="page-item"><a class="page-link" href="#" onclick="buscaUserPagAjax(\''+url+'\')">'+ (p + 1) +'</a></li>'); 
+											}
 									}
 
 								})
@@ -385,87 +400,153 @@
 								});
 			}
 		}
+		function bucarUserPageAjax(url){
+			$.ajax(
+					{
+
+						method : "get",
+						url : url,
+						success : function(response, textStatus, xhr) {
+							const json = JSON.parse(response);
+							console.info(response);
+							console.info(json);
+							$('#tabela-consulta-usuario > tbody > tr').remove();
+							$('#ulPaginacaoUserAjax > li').remove();
+
+							for (var p = 0; p < json.length; p++) {
+								$('#tabela-consulta-usuario > tbody')
+										.append(
+												'<tr><td>'
+														+ json[p].id
+														+ '</td><td>'
+														+ json[p].nome
+														+ '</td><td><button type="button" class="btn btn-link" onclick="verEditar('
+														+ json[p].id
+														+ ')">Ver</button></td></tr>');
+							}
+
+							document.getElementById('totalResponse').textContent = 'Resultados: '+ json.length;
+							var totalPaginas = xhr.getResponseHeader("totalPaginas");
+								for(var p=0; p< totalPaginas; p++){
+									var url = urlAction+ "?login=" + loginBusca	+ "&acao=consultarUsuarioAjaxPage&de=" + (p * 5); //a partir do registro "de" mais 5 do offset, tb definido no DAORepository
+									+ "&acao=consultarUsuarioAjax",
+									$("#ulPaginacaoUserAjax").append('<li class="page-item"><a class="page-link" href="#" onclick="buscaUserPagAjax(\''+url+'\')">'+ (p + 1) +'</a></li>');
+								}
+						}
+
+					})
+			.fail(
+					function(xhr, status, errorThrow) {
+						alert('Erro ao consultar o usuário por Login: '
+								+ xhr.responseText);
+					});
+		}
 		function verEditar(id) {
 			var urlAction = document.getElementById('form-user').action;
 			window.location.href = urlAction + '?acao=buscarEditar&id=' + id;
 		}
-		function visualizarImg(imagemBase64, fileFoto){
+		function visualizarImg(imagemBase64, fileFoto) {
 			var preview = document.getElementById(imagemBase64);
 			var fileUser = document.getElementById(fileFoto).files[0];
 			var reader = new FileReader();
-			
-			reader.onloadend = function (){
+
+			reader.onloadend = function() {
 				preview.src = reader.result; /*carrega a foto na tela*/
 			};
-			
-			if(fileUser){
+
+			if (fileUser) {
 				reader.readAsDataURL(fileUser); /*preview da imagem*/
-			}else{
+			} else {
 				preview.src = '';
 			}
 		}
-		
-		$(document).ready(function() {
 
-            function limpa_formulário_cep() {
-                // Limpa valores do formulário de cep.
-                $("#rua").val("");
-                $("#bairro").val("");
-                $("#cidade").val("");
-                $("#uf").val("");
-                $("#ibge").val("");
-            }
-            
-            //Quando o campo cep perde o foco.
-            $("#cep").blur(function() {
+		$(document)
+				.ready(
+						function() {
 
-                //Nova variável "cep" somente com dígitos.
-                var cep = $(this).val().replace(/\D/g, '');
+							function limpa_formulário_cep() {
+								// Limpa valores do formulário de cep.
+								$("#rua").val("");
+								$("#bairro").val("");
+								$("#cidade").val("");
+								$("#uf").val("");
+								$("#ibge").val("");
+							}
 
-                //Verifica se campo cep possui valor informado.
-                if (cep != "") {
+							//Quando o campo cep perde o foco.
+							$("#cep")
+									.blur(
+											function() {
 
-                    //Expressão regular para validar o CEP.
-                    var validacep = /^[0-9]{8}$/;
+												//Nova variável "cep" somente com dígitos.
+												var cep = $(this).val()
+														.replace(/\D/g, '');
 
-                    //Valida o formato do CEP.
-                    if(validacep.test(cep)) {
+												//Verifica se campo cep possui valor informado.
+												if (cep != "") {
 
-                        //Preenche os campos com "..." enquanto consulta webservice.
-                        $("#logradouro").val("...");
-                        $("#bairro").val("...");
-                        $("#localidade").val("...");
-                        $("#uf").val("...");
+													//Expressão regular para validar o CEP.
+													var validacep = /^[0-9]{8}$/;
 
-                        //Consulta o webservice viacep.com.br/
-                        $.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
+													//Valida o formato do CEP.
+													if (validacep.test(cep)) {
 
-                            if (!("erro" in dados)) {
-                                //Atualiza os campos com os valores da consulta.
-                                $("#logradouro").val(dados.logradouro);
-                                $("#bairro").val(dados.bairro);
-                                $("#localidade").val(dados.localidade);
-                                $("#uf").val(dados.uf);
-                            } //end if.
-                            else {
-                                //CEP pesquisado não foi encontrado.
-                                limpa_formulário_cep();
-                                alert("CEP não encontrado.");
-                            }
-                        });
-                    } //end if.
-                    else {
-                        //cep é inválido.
-                        limpa_formulário_cep();
-                        alert("Formato de CEP inválido.");
-                    }
-                } //end if.
-                else {
-                    //cep sem valor, limpa formulário.
-                    limpa_formulário_cep();
-                }
-            });
-        });
+														//Preenche os campos com "..." enquanto consulta webservice.
+														$("#logradouro").val(
+																"...");
+														$("#bairro").val("...");
+														$("#localidade").val(
+																"...");
+														$("#uf").val("...");
+
+														//Consulta o webservice viacep.com.br/
+														$
+																.getJSON(
+																		"https://viacep.com.br/ws/"
+																				+ cep
+																				+ "/json/?callback=?",
+																		function(
+																				dados) {
+
+																			if (!("erro" in dados)) {
+																				//Atualiza os campos com os valores da consulta.
+																				$(
+																						"#logradouro")
+																						.val(
+																								dados.logradouro);
+																				$(
+																						"#bairro")
+																						.val(
+																								dados.bairro);
+																				$(
+																						"#localidade")
+																						.val(
+																								dados.localidade);
+																				$(
+																						"#uf")
+																						.val(
+																								dados.uf);
+																			} //end if.
+																			else {
+																				//CEP pesquisado não foi encontrado.
+																				limpa_formulário_cep();
+																				alert("CEP não encontrado.");
+																			}
+																		});
+													} //end if.
+													else {
+														//cep é inválido.
+														limpa_formulário_cep();
+														alert("Formato de CEP inválido.");
+													}
+												} //end if.
+												else {
+													//cep sem valor, limpa formulário.
+													limpa_formulário_cep();
+												}
+											});
+						});
 	</script>
 </body>
 </html>

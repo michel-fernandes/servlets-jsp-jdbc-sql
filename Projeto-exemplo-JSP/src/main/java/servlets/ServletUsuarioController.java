@@ -45,14 +45,14 @@ public class ServletUsuarioController  extends ServletGenericUtil{
 			if(acao.equals("buscarEditar")) {
 				Long id = Long.parseLong(request.getParameter("id"));
 				ModelLogin user = usuarioDAO.consultarId(id, super.getUserLogado(request));					
-				List<ModelLogin> listUsers = usuarioDAO.consultarUsers(super.getUserLogado(request));							
+				List<ModelLogin> listUsers = usuarioDAO.consultarUsers(super.getUserLogado(request), 0l);							
 				request.setAttribute("listUsers", listUsers);
 				request.setAttribute("msg", "Usuário em edição");
 				request.setAttribute("modelLogin", user);
 				request.setAttribute("totalPaginas", usuarioDAO.totalPagina(super.getUserLogado(request)));
 				request.getRequestDispatcher("/principal/cadastro-usuario.jsp").forward(request, response);
 			} else if(acao.equals("listarUser")) {
-				List<ModelLogin> listUsers = usuarioDAO.consultarUsers(super.getUserLogado(request));							
+				List<ModelLogin> listUsers = usuarioDAO.consultarUsers(super.getUserLogado(request), 0l);							
 				request.setAttribute("listUsers", listUsers);
 				request.setAttribute("msg", "Usuários carregados");
 				request.setAttribute("totalPaginas", usuarioDAO.totalPagina(super.getUserLogado(request)));
@@ -76,13 +76,23 @@ public class ServletUsuarioController  extends ServletGenericUtil{
 				usuarioDAO.deletar(login);					
 				response.getWriter().write("Usuário excluido com sucesso");
 			}else if(!login.isEmpty() && login!= null && acao.equals("consultarUsuarioAjax")) {
-				List<ModelLogin> listUsers = usuarioDAO.consultarUsers(login, super.getUserLogado(request));					
+				Long de = Long.parseLong(request.getParameter("de"));
+				List<ModelLogin> listUsers = usuarioDAO.consultarUsersPage(login, super.getUserLogado(request), de);		
 				Gson gson = new GsonBuilder().setPrettyPrinting().create(); //bewutify Gson
 				String json = gson.toJson(listUsers);
+				response.addHeader("totalPaginas", usuarioDAO.consultarUsersTotalPaginas(login, super.getUserLogado(request)).toString());
+				response.getWriter().write(json);
+			}else if(!login.isEmpty() && login!= null && acao.equals("consultarUsuarioAjaxPage")) {
+				Long de = Long.parseLong(request.getParameter("de"));
+				List<ModelLogin> listUsers = usuarioDAO.consultarUsersPage(login, super.getUserLogado(request), de);					
+				Gson gson = new GsonBuilder().setPrettyPrinting().create(); //bewutify Gson
+				String json = gson.toJson(listUsers);
+				response.addHeader("totalPaginas", usuarioDAO.consultarUsersTotalPaginas(login, super.getUserLogado(request)).toString());
 				response.getWriter().write(json);
 			}else if(!login.isEmpty() && login!= null && login.equals("deletar") && usuarioDAO.jaExisteLogin(login)){
 				usuarioDAO.deletar(login);					
-				List<ModelLogin> listUsers = usuarioDAO.consultarUsers(super.getUserLogado(request));							
+				Long de = Long.parseLong(request.getParameter("de"));
+				List<ModelLogin> listUsers = usuarioDAO.consultarUsersPaginado(super.getUserLogado(request), de);							
 				request.setAttribute("listUsers", listUsers);
 				request.setAttribute("msg", "Usuário excluido com sucesso");
 				request.setAttribute("totalPaginas", usuarioDAO.totalPagina(super.getUserLogado(request)));
@@ -154,7 +164,7 @@ public class ServletUsuarioController  extends ServletGenericUtil{
 						erro("Login existente", request, response);
 					}
 				}
-				List<ModelLogin> listUsers = usuarioDAO.consultarUsers(super.getUserLogado(request));							
+				List<ModelLogin> listUsers = usuarioDAO.consultarUsers(super.getUserLogado(request), 0l);							
 				request.setAttribute("listUsers", listUsers);
 				request.setAttribute("totalPaginas", usuarioDAO.totalPagina(super.getUserLogado(request)));
 				request.getRequestDispatcher("/principal/cadastro-usuario.jsp").forward(request, response);

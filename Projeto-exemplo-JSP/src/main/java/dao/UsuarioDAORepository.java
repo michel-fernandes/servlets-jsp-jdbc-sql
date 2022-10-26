@@ -181,11 +181,71 @@ public class UsuarioDAORepository {
 		
 	}
 	
-	public List<ModelLogin> consultarUsers(Long userLogado) throws SQLException {
+	public List<ModelLogin> consultarUsersPage(String login , Long userLogado, Long offset) throws SQLException {
 
-		String sql = "select * from public.model_login where userAdmin is false and usuario_id=? order by nome" ;
+		String sql = "select * from public.model_login where upper(login) like upper(?) and userAdmin is false and usuario_id=? order by nome offset ? limit 5";
+		PreparedStatement statement = connection.prepareStatement(sql);
+		statement.setString(1, "%" + login + "%");
+		statement.setLong(2, userLogado);
+		statement.setLong(3, offset);
+		ResultSet resultSet = statement.executeQuery();
+		
+		List<ModelLogin> listLogin = new ArrayList<ModelLogin>();
+		
+		while(resultSet.next()) {
+			ModelLogin modelLogin = new ModelLogin();
+			modelLogin.setId(resultSet.getLong("id"));
+			modelLogin.setLogin(resultSet.getString("login"));
+			modelLogin.setNome(resultSet.getString("nome"));
+			modelLogin.setEmail(resultSet.getString("email"));
+			modelLogin.setAdmin(resultSet.getBoolean("useradmin"));
+			modelLogin.setPerfil(resultSet.getString("perfil"));
+			modelLogin.setSexo(resultSet.getString("sexo"));
+			modelLogin.setImagem(resultSet.getString("imagem"));
+			modelLogin.setFormatoImagem(resultSet.getString("formato_imagem"));
+			modelLogin.setCep(resultSet.getString("cep"));
+			modelLogin.setLogradouro(resultSet.getString("logradouro"));
+			modelLogin.setBairro(resultSet.getString("bairro"));
+			modelLogin.setLocalidade(resultSet.getString("localidade"));
+			modelLogin.setUf(resultSet.getString("uf"));
+			modelLogin.setNumero(resultSet.getString("numero"));
+			modelLogin.setSenha(null);
+			listLogin.add(modelLogin);
+		}
+		
+		return listLogin;
+		
+	}
+	
+	public Integer consultarUsersTotalPaginas(String login , Long userLogado) throws SQLException {
+
+		String sql = "select count(1) as total from public.model_login where upper(login) like upper(?) and userAdmin is false and usuario_id=?";
+		PreparedStatement statement = connection.prepareStatement(sql);
+		statement.setString(1, "%" + login + "%");
+		statement.setLong(2, userLogado);
+		ResultSet resultSet = statement.executeQuery();
+		
+		Double paginas = 0.;
+		
+		if(resultSet.next()) {		
+			Double cadastros = resultSet.getDouble("total");
+			Double usersPorPagina = 5.;
+			paginas = cadastros/usersPorPagina;
+			Double resto = cadastros%usersPorPagina;
+			if(resto>0) {
+				paginas++;
+			}
+		}
+		
+		return paginas.intValue();
+		
+	}
+	public List<ModelLogin> consultarUsers(Long userLogado, Long offset) throws SQLException {
+
+		String sql = "select * from public.model_login where userAdmin is false and usuario_id=? order by nome offset ? limit 5" ;
 		PreparedStatement statement = connection.prepareStatement(sql);
 		statement.setLong(1, userLogado);
+		statement.setLong(2, offset);
 		ResultSet resultSet = statement.executeQuery();
 		
 		List<ModelLogin> listLogin = new ArrayList<ModelLogin>();

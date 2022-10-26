@@ -4,6 +4,7 @@
 			<a class="mobile-menu waves-effect waves-light" id="mobile-collapse"
 				href="#!"> <i class="ti-menu"></i>
 			</a>
+		<!-- 
 			<div class="mobile-search waves-effect waves-light">
 				<div class="header-search">
 					<div class="main-search morphsearch-search">
@@ -15,9 +16,9 @@
 						</div>
 					</div>
 				</div>
-			</div>
-			<a href="index.html"> <img class="img-fluid"
-				src="<%= request.getContextPath() %>/assets/images/logo.png" alt="Theme-Logo" />
+			</div>-->
+			<a href="<%= request.getContextPath() %>/principal/principal.jsp"> <img width= "40 px" class="img-fluid"
+				src="<%= request.getContextPath() %>/assets/images/logo.png" alt="Projeto Java EE" />
 			</a> <a class="mobile-options waves-effect waves-light"> <i
 				class="ti-more"></i>
 			</a>
@@ -25,7 +26,7 @@
 
 		<div class="navbar-container container-fluid">
 			<ul class="nav-left">
-				<li>
+				<!--  <li>
 					<div class="sidebar_toggle">
 						<a href="javascript:void(0)"><i class="ti-menu"></i></a>
 					</div>
@@ -39,17 +40,17 @@
 								class="ti-search"></i></span>
 						</div>
 					</div>
-				</li>
+				</li>-->
 				<li><a href="#!" onclick="javascript:toggleFullScreen()"
 					class="waves-effect waves-light"> <i class="ti-fullscreen"></i>
 				</a></li>
 			</ul>
 			<ul class="nav-right">
-				<li class="header-notification"><a href="#!"
+				<!-- <li class="header-notification"><a href="#!"
 					class="waves-effect waves-light"> <i class="ti-bell"></i> <span
 						class="badge bg-c-red"></span>
-				</a>
-					<ul class="show-notification">
+				</a> -->
+					<!--<ul class="show-notification">
 						<li>
 							<h6>Notifications</h6> <label class="label label-danger">New</label>
 						</li>
@@ -98,7 +99,7 @@
 								</div>
 							</div>
 						</li>
-					</ul></li>
+					</ul>  --></li>
 				<li class="user-profile header-notification"><a href="#!"
 					class="waves-effect waves-light"> 
 					<c:if test="${modelLogado.getImagem()!='' && modelLogado.getImagem()!=null}">
@@ -110,7 +111,7 @@
 						class="ti-angle-down"></i>
 				</a>
 					<ul class="show-notification profile-notification">
-						<li class="waves-effect waves-light"><a href="#!"> <i
+						<!--  <li class="waves-effect waves-light"><a href="#!"> <i
 								class="ti-settings"></i> Settings
 						</a></li>
 						<li class="waves-effect waves-light"><a
@@ -122,10 +123,10 @@
 						<li class="waves-effect waves-light"><a
 							href="auth-lock-screen.html"> <i class="ti-lock"></i> Lock
 								Screen
-						</a></li>
+						</a></li>-->
 						<li class="waves-effect waves-light"><a
 							href="ServletLogin?acao=logout"> <i
-								class="ti-layout-sidebar-left"></i> Logout
+								class="ti-layout-sidebar-left"></i> Sair
 						</a></li>
 					</ul></li>
 			</ul>
