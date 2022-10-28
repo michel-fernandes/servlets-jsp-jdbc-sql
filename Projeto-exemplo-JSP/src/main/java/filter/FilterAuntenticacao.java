@@ -1,5 +1,10 @@
 package filter;
 
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
+
+import connection.SingleConnection;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.FilterConfig;
@@ -10,18 +15,15 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
-
-import connection.SingleConnection;
 
 @WebFilter(urlPatterns = { "/principal/*" }) // intercepta todos as requisições do mapeamento
 public class FilterAuntenticacao extends HttpFilter implements Filter {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static Connection connection;
 	
 	public FilterAuntenticacao() {
