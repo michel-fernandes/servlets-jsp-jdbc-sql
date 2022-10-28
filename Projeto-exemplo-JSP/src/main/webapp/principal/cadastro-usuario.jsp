@@ -353,63 +353,66 @@ if (ml != null && ml.getSexo().equals("MASCULINO")) {
 			}
 		}
 		function buscarUsuarioLogin() {
-		    alert(document.getElementById('form-user').action);
-		    
-		    var loginBusca = document.getElementById('loginPesquisar').value;
-		    
-		    if (loginBusca != null && loginBusca != '' && loginBusca.trim() != ''){ /*Validando que tem que ter valor pra buscar no banco*/
-			
-			 var urlAction = document.getElementById('form-user').action;
-			
-			 $.ajax({
-			     
-			     method: "get",
-			     url : urlAction,
-			     data : "login=" + login + '&acao=consultarUsuarioAjax=0',
-			     success: function (response, textStatus, xhr) {
-				 
-				 var json = JSON.parse(response);
-				 
-				 
-				 $('#tabela-consulta-usuario > tbody > tr').remove();
-				 $(''#ulPaginacaoUserAjax  > li').remove();
-				 
-				  for(var p = 0; p < json.length; p++){
-				      $('#tabela-consulta-usuario > tbody').append(
-				    		  										'<tr> <td>'+json[p].id+'</td> <td> '
-				    		  										+json[p].nome
-				    		  										+'</td> <td><button onclick="verEditar('+json[p].id+')" type="button" class="btn btn-info">Ver</button></td></tr>');
-				  }
-				  
-				  document.getElementById('totalResponse').textContent = 'Resultados: ' + json.length;
-				  
-				    var totalPagina = xhr.getResponseHeader("totalPaginas");
-			
-				  
-				    
-					  for (var p = 0; p < totalPagina; p++){
-					      
-					      var dados = 'login=' 
-					      				+ login
-					      				+ '&acao=consultarUsuarioAjaxPage&de='
-					      				+ (p * 5);
-					      
-					   
-					      $("#ulPaginacaoUserAjax").append(
-					    		  							'<li class="page-item"><a class="page-link" href="#" onclick="buscarUserPagAjax(\''+dados+'\')">'
-					    		  							+ (p + 1) 
-					    		  							+'</a></li>');
-					      
-					  }
-				 
-			     }
-			     
-			 }).fail(function(xhr, status, errorThrown){
-			    alert('Erro ao buscar usuário por nome: ' + xhr.responseText);
-			 });
-		    }
-		}
-
+	           // alert(document.getElementById('form-user').action);
+	            
+	            var loginBusca = document.getElementById('loginPesquisar').value;
+	            
+	            alert(loginBusca);
+	            
+	            if (loginBusca != null && loginBusca != '' && loginBusca.trim() != ''){ /*Validando que tem que ter valor pra buscar no banco*/
+	            
+	             var urlAction = document.getElementById('form-user').action;
+	            
+	             $.ajax({
+	                 
+	                 method: "get",
+	                 url : urlAction,
+	                 data : "login=" + loginBusca + '&acao=consultarUsuarioAjax',
+	                 
+	                 success: function (response, textStatus, xhr) {
+	                 
+	                 var json = JSON.parse(response);
+	                 
+	                 
+	                 $('#tabela-consulta-usuario > tbody > tr').remove();
+	                 $('#ulPaginacaoUserAjax  > li').remove();
+	                 
+	                  for(var p = 0; p < json.length; p++){
+	                      $('#tabela-consulta-usuario > tbody').append(
+	                                                                      '<tr> <td>'+json[p].id+'</td> <td> '
+	                                                                      +json[p].nome
+	                                                                      +'</td> <td><button onclick="verEditar('+json[p].id+')" type="button" class="btn btn-info">Ver</button></td></tr>');
+	                  }
+	                  
+	                  document.getElementById('totalResponse').textContent = 'Resultados: ' + json.length;
+	                  
+	                    var totalPagina = xhr.getResponseHeader("totalPaginas");
+	            
+	                  
+	                    
+	                      for (var p = 0; p < totalPagina; p++){
+	                          
+	                          var dados = 'login=' 
+	                                          + login
+	                                          + '&acao=consultarUsuarioAjaxPage&de='
+	                                          + (p * 5);
+	                          
+	                       
+	                          $("#ulPaginacaoUserAjax").append(
+	                                                              '<li class="page-item"><a class="page-link" href='' onclick="buscarUserPagAjax(\''+dados+'\')">'
+	                                                              + (p + 1) 
+	                                                              +'</a></li>');
+	                          
+	                      }
+	                 
+	                 }
+	                 
+	             }).fail(function(xhr, status, errorThrown){
+	                alert('Erro ao buscar usuário por nome: ' + xhr.responseText);
+	             });
+	            }
+	        }
+		
 		function buscarUserPagAjax(dados) {
 
 			var urlAction = document.getElementById('form-user').action;
