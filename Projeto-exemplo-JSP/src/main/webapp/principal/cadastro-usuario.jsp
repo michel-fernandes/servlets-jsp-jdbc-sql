@@ -411,8 +411,7 @@ if (ml != null && ml.getSexo().equals("MASCULINO")) {
 	                alert('Erro ao buscar usuário por nome: ' + xhr.responseText);
 	             });
 	            }
-	        }
-		
+	        }		
 		function buscarUserPagAjax(dados) {
 
 			var urlAction = document.getElementById('form-user').action;
