@@ -353,93 +353,122 @@ if (ml != null && ml.getSexo().equals("MASCULINO")) {
 			}
 		}
 		function buscarUsuarioLogin() {
-			var loginBusca = document.getElementById('loginPesquisar').value;
+		    alert(document.getElementById('form-user').action);
+		    
+		    var loginBusca = document.getElementById('loginPesquisar').value;
+		    
+		    if (loginBusca != null && loginBusca != '' && loginBusca.trim() != ''){ /*Validando que tem que ter valor pra buscar no banco*/
+			
+			 var urlAction = document.getElementById('form-user').action;
+			
+			 $.ajax({
+			     
+			     method: "get",
+			     url : urlAction,
+			     data : "login=" + login + '&acao=consultarUsuarioAjax=0',
+			     success: function (response, textStatus, xhr) {
+				 
+				 var json = JSON.parse(response);
+				 
+				 
+				 $('#tabela-consulta-usuario > tbody > tr').remove();
+				 $(''#ulPaginacaoUserAjax  > li').remove();
+				 
+				  for(var p = 0; p < json.length; p++){
+				      $('#tabela-consulta-usuario > tbody').append(
+				    		  										'<tr> <td>'+json[p].id+'</td> <td> '
+				    		  										+json[p].nome
+				    		  										+'</td> <td><button onclick="verEditar('+json[p].id+')" type="button" class="btn btn-info">Ver</button></td></tr>');
+				  }
+				  
+				  document.getElementById('totalResponse').textContent = 'Resultados: ' + json.length;
+				  
+				    var totalPagina = xhr.getResponseHeader("totalPaginas");
+			
+				  
+				    
+					  for (var p = 0; p < totalPagina; p++){
+					      
+					      var dados = 'login=' 
+					      				+ login
+					      				+ '&acao=consultarUsuarioAjaxPage&de='
+					      				+ (p * 5);
+					      
+					   
+					      $("#ulPaginacaoUserAjax").append(
+					    		  							'<li class="page-item"><a class="page-link" href="#" onclick="buscarUserPagAjax(\''+dados+'\')">'
+					    		  							+ (p + 1) 
+					    		  							+'</a></li>');
+					      
+					  }
+				 
+			     }
+			     
+			 }).fail(function(xhr, status, errorThrown){
+			    alert('Erro ao buscar usuário por nome: ' + xhr.responseText);
+			 });
+		    }
+		}
+
+		function buscarUserPagAjax(dados) {
+
 			var urlAction = document.getElementById('form-user').action;
+			var login = document.getElementById('login').value;
 
-			if (loginBusca != null && loginBusca != ''
-					&& loginBusca.trim() != '') {
-				$.ajax({
-									method : "get",
-									url : urlAction,
-									data : "&login=" + loginBusca
-											+ "&acao=consultarUsuarioAjax&de=0",
-									success : function(response, textStatus,
-											xhr) {
-										const json = JSON.parse(response);
-										console.info(response);
-										console.info(json);
-										$('#tabela-consulta-usuario > tbody > tr').remove();
-										$('#ulPaginacaoUserAjax > li').remove();
+			$
+					.ajax(
+							{
+								method : "get",
+								url : urlAction,
+								data : dados,
+								success : function(response, textStatus, xhr) {
 
-										for (var p = 0; p < json.length; p++) {
-											$('#tabela-consulta-usuario > tbody')
-													.append(
-															'<tr><td>'
-																	+ json[p].id
-																	+ '</td><td>'
-																	+ json[p].nome
-																	+ '</td><td><button type="button" class="btn btn-link" onclick="verEditar('
-																	+ json[p].id
-																	+ ')">Ver</button></td></tr>');
-										}
+									var json = JSON.parse(response);
 
-										document.getElementById('totalResponse').textContent = 'Resultados: '+ json.length;
-										var totalPaginas = xhr.getResponseHeader("totalPaginas");
-											for(var p=0; p< totalPaginas; p++){
-												var url = urlAction+ "?login=" + loginBusca	+ "&acao=consultarUsuarioAjaxPage&de=" + (p * 5); //a partir do registro "de" mais 5 do offset, tb definido no DAORepository
-												+ "&acao=consultarUsuarioAjax",
-												$("#ulPaginacaoUserAjax").append('<li class="page-item"><a class="page-link" href="#" onclick="buscaUserPagAjax(\''+url+'\')">'+ (p + 1) +'</a></li>'); 
-											}
+									$('#tabela-consulta-usuario > tbody > tr').remove();
+									$('#ulPaginacaoUserAjax > li').remove();
+
+									for (var p = 0; p < json.length; p++) {
+										$('#tabela-consulta-usuario > tbody')
+												.append(
+														'<tr> <td>'
+																+ json[p].id
+																+ '</td> <td> '
+																+ json[p].nome
+																+ '</td> <td><button onclick="verEditar('
+																+ json[p].id
+																+ ')" type="button" class="btn btn-info">Ver</button></td></tr>');
 									}
 
-								})
-						.fail(
-								function(xhr, status, errorThrow) {
-									alert('Erro ao consultar o usuário por Login: '
-											+ xhr.responseText);
-								});
-			}
-		}
-		function bucarUserPageAjax(url){
-			$.ajax(
-					{
+									document.getElementById('totalResponse').textContent = 'Resultados: '	+ json.length;
 
-						method : "get",
-						url : url,
-						success : function(response, textStatus, xhr) {
-							const json = JSON.parse(response);
-							console.info(response);
-							console.info(json);
-							$('#tabela-consulta-usuario > tbody > tr').remove();
-							$('#ulPaginacaoUserAjax > li').remove();
+									var totalPagina = xhr.getResponseHeader("totalPaginas");
 
-							for (var p = 0; p < json.length; p++) {
-								$('#tabela-consulta-usuario > tbody')
-										.append(
-												'<tr><td>'
-														+ json[p].id
-														+ '</td><td>'
-														+ json[p].nome
-														+ '</td><td><button type="button" class="btn btn-link" onclick="verEditar('
-														+ json[p].id
-														+ ')">Ver</button></td></tr>');
-							}
+									for (var p = 0; p < totalPagina; p++) {
 
-							document.getElementById('totalResponse').textContent = 'Resultados: '+ json.length;
-							var totalPaginas = xhr.getResponseHeader("totalPaginas");
-								for(var p=0; p< totalPaginas; p++){
-									var url = urlAction+ "?login=" + loginBusca	+ "&acao=consultarUsuarioAjaxPage&de=" + (p * 5); //a partir do registro "de" mais 5 do offset, tb definido no DAORepository
-									+ "&acao=consultarUsuarioAjax",
-									$("#ulPaginacaoUserAjax").append('<li class="page-item"><a class="page-link" href="#" onclick="buscaUserPagAjax(\''+url+'\')">'+ (p + 1) +'</a></li>');
+										var dados = 'login='
+												+ login
+												+ '&acao=consultarUsuarioAjaxPage&de='
+												+ (p * 5);
+
+										$("#ulPaginacaoUserAjax")
+												.append(
+														'<li class="page-item"><a class="page-link" href="#" onclick="buscarUserPagAjax(\''
+																+ url
+																+ '\')">'
+																+ (p + 1)
+																+ '</a></li>');
+
+									}
+
 								}
-						}
 
-					})
-			.fail(
-					function(xhr, status, errorThrow) {
-						alert('Erro ao consultar o usuário por Login: '
-								+ xhr.responseText);
-					});
+							}).fail(
+							function(xhr, status, errorThrown) {
+								alert('Erro ao buscar usuário por nome: '
+										+ xhr.responseText);
+							});
+
 		}
 		function verEditar(id) {
 			var urlAction = document.getElementById('form-user').action;
