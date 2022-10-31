@@ -22,13 +22,13 @@
 	<link href="https://fonts.googleapis.com/css?family=Roboto:400,500"
 		rel="stylesheet">
 	<!-- waves.css -->
-	<link rel="stylesheet" href="<%= request.getContextPath() %>/assets/pages/waves/css/waves.min.css"
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/node-waves/0.7.6/waves.min.css"
 		type="text/css" media="all">
 	<!-- Required Fremwork -->
 	<link rel="stylesheet" type="text/css"
-		href="<%= request.getContextPath() %>/assets/css/bootstrap/css/bootstrap.min.css">
+		href="<%= request.getContextPath() %>/principal/bootstrap.min.css">
 	<!-- waves.css -->
-	<link rel="stylesheet" href="<%= request.getContextPath() %>/assets/pages/waves/css/waves.min.css"
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/node-waves/0.7.6/waves.min.css"
 		type="text/css" media="all">
 	<!-- themify icon -->
 	<link rel="stylesheet" type="text/css"

@@ -101,9 +101,7 @@ function buscarUserPagAjax(dados) {
 
 function buscarUsuarioLogin() {
 	
-       alert(document.getElementById('loginPesquisar').value);
        var loginBusca = document.getElementById('loginPesquisar').value;
-        
        if (loginBusca != null && loginBusca != '' && loginBusca.trim() != ''){ /*Validando que tem que ter valor pra buscar no banco*/
         
         var urlAction = document.getElementById('form-user').action;
