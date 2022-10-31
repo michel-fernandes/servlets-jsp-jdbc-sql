@@ -281,7 +281,7 @@
           // prevent scrolling the page if necessary
           if(!releaseScroll)
           {
-  		      e.originalEvent.preventDefault();
+  		      //e.originalEvent.preventDefault();
 		      }
           if (e.originalEvent.touches.length)
           {
