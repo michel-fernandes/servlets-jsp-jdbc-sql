@@ -3,7 +3,6 @@ package excecao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
-import java.lang.String;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -17,7 +16,12 @@ import jakarta.servlet.http.HttpServletResponse;
 @WebServlet(urlPatterns = "/errorHandler")
 public class TratamentoExcecao extends HttpServlet implements RequestDispatcher{
 	
-    @Override
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Override
     protected void doGet(
       HttpServletRequest req, 
       HttpServletResponse resp) throws IOException {

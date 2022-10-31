@@ -1,10 +1,10 @@
 <!-- Required Jquery -->
 <script type="text/javascript" src="<%= request.getContextPath() %>/assets/js/jquery/jquery.min.js"></script>
 <script type="text/javascript"
-	src="<%= request.getContextPath() %>/assets/js/jquery-ui/jquery-ui.min.js "></script>
+	src="<%= request.getContextPath() %>/assets/js/jquery-ui/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/assets/js/popper.js/popper.min.js"></script>
 <script type="text/javascript"
-	src="<%= request.getContextPath() %>/assets/js/bootstrap/js/bootstrap.min.js "></script>
+	src="<%= request.getContextPath() %>/assets/js/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/assets/pages/widget/excanvas.js "></script>
 <!-- waves js -->
 <script src="<%= request.getContextPath() %>/assets/pages/waves/js/waves.min.js"></script>
@@ -32,4 +32,4 @@
 <!-- custom js -->
 <script type="text/javascript"
 	src="<%= request.getContextPath() %>/assets/pages/dashboard/custom-dashboard.js"></script>
-<script type="text/javascript" src="<%= request.getContextPath() %>/assets/js/script.js "></script>
+<script type="text/javascript" src="<%= request.getContextPath() %>/assets/js/script.js"></script>

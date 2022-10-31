@@ -3,20 +3,22 @@ package servlets;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.tomcat.jakartaee.commons.compress.utils.IOUtils;
+import org.apache.commons.compress.utils.IOUtils;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import dao.UsuarioDAORepository;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
+
+import dao.UsuarioDAORepository;
 import model.ModelLogin;
 
 @MultipartConfig // trabalha com enctype="multipart/form-data" para recebimento de dados do form
@@ -138,7 +140,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 				}
 				modelLogin.setId((!id.isEmpty() && id != null) ? Long.parseLong(id) : null);
 
-				if (ServletFileUpload.isMultipartContent(request)) {
+				if (ServletFileUpload.isMultipartContent((javax.servlet.http.HttpServletRequest) request)) {
 					Part part = request.getPart("fileFoto"); /* captura a foto do form */
 					byte[] foto = IOUtils.toByteArray(part.getInputStream()); /* coverte imagem para byte */
 					String imagemBase64 = "data:" + part.getContentType() + ";base64,"

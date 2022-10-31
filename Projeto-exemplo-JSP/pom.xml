@@ -10,7 +10,7 @@
   	<dependency>
 	    <groupId>org.postgresql</groupId>
 	    <artifactId>postgresql</artifactId>
-	    <version>42.5.0</version>
+	    <version>42.2.13</version>
 	</dependency>
 	<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
 	<dependency>
@@ -37,8 +37,26 @@
 	<dependency>
 	    <groupId>org.apache.tomcat</groupId>
 	    <artifactId>jakartaee-migration</artifactId>
-	    <version>1.0.0</version>
+	    <version>1.0.4</version>
 	</dependency>
+	<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-compress -->
+	<dependency>
+	    <groupId>org.apache.commons</groupId>
+	    <artifactId>commons-compress</artifactId>
+	    <version>1.21</version>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.tomcat</groupId>
+		<artifactId>tomcat-util</artifactId>
+		<version>10.1.1</version>
+	</dependency>
+	<!-- Thanks for using https://jar-download.com -->
+	<dependency>
+		<groupId>org.apache.tomcat</groupId>
+		<artifactId>tomcat-coyote</artifactId>
+		<version>7.0.96</version>
+	</dependency>
+	<!-- Thanks for using https://jar-download.com -->
   </dependencies>
   <build>
     <plugins>
