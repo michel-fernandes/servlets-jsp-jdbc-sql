@@ -138,7 +138,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 				}
 				modelLogin.setId((!id.isEmpty() && id != null) ? Long.parseLong(id) : null);
 
-				if (ServletFileUpload.isMultipartContent((javax.servlet.http.HttpServletRequest)request)) {
+				if (ServletFileUpload.isMultipartContent(request)) {
 					Part part = request.getPart("fileFoto"); /* captura a foto do form */
 					byte[] foto = IOUtils.toByteArray(part.getInputStream()); /* coverte imagem para byte */
 					String imagemBase64 = "data:" + part.getContentType() + ";base64,"
